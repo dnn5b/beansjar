@@ -1,0 +1,36 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "53db508c5248423325bd5393a1c88c03",
+    "entities": [
+      {
+        "tableName": "beans",
+        "createSql": "CREATE TABLE IF NOT EXISTS '${TABLE_NAME}' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'event' TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "event",
+            "columnName": "event",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS beans (id INTEGER PRIMARY KEY, event TEXT)"
+    ]
+  }
+}

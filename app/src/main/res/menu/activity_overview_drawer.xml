@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings"/>
+    </group>
+
+    <item android:title="Todo">
+        <menu>
+            <item
+                android:id="@+id/nav_1"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Extend bean (date, rating,...)"/>
+            <item
+                android:id="@+id/nav_2"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="German translation"/>
+            <item
+                android:id="@+id/nav_3"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Animation"/>
+            <item
+                android:id="@+id/nav_4"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Filter function"/>
+            <item
+                android:id="@+id/nav_5"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Search function"/>
+        </menu>
+    </item>
+
+</menu>
