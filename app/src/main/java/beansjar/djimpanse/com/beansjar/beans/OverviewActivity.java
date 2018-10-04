@@ -1,40 +1,39 @@
-package beansjar.djimpanse.com.beansjar.beans.overview;
+package beansjar.djimpanse.com.beansjar.beans;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import java.util.List;
 import java.util.concurrent.Executors;
 
 import beansjar.djimpanse.com.beansjar.AppDatabase;
 import beansjar.djimpanse.com.beansjar.R;
-import beansjar.djimpanse.com.beansjar.beans.create.CreateBeanDialog;
+import beansjar.djimpanse.com.beansjar.beans.create.CreateBeanFragment;
+import beansjar.djimpanse.com.beansjar.beans.create.CreateBeanFragment
+        .OnFragmentInteractionListener;
 import beansjar.djimpanse.com.beansjar.beans.create.CreateCallback;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
-import beansjar.djimpanse.com.beansjar.beans.data.RefreshBeansOverviewTask;
+import beansjar.djimpanse.com.beansjar.beans.list.BeansListFragment;
 
 
 public class OverviewActivity extends AppCompatActivity implements NavigationView
-        .OnNavigationItemSelectedListener, CreateCallback {
+        .OnNavigationItemSelectedListener, CreateCallback, OnFragmentInteractionListener {
 
-    private RefreshBeansOverviewTask refreshTask;
-
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private FrameLayout content;
+private BeansListFragment listFragment;
+    private FloatingActionButton floatingActionBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +42,15 @@ public class OverviewActivity extends AppCompatActivity implements NavigationVie
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new CreateBeanDialog(OverviewActivity.this, OverviewActivity.this);
-            }
+        floatingActionBtn = findViewById(R.id.fab);
+        floatingActionBtn.setOnClickListener(view -> {
+                Fragment newFragment = new CreateBeanFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.content, newFragment, "tes")
+                        .disallowAddToBackStack()
+                        .commit();
+                showAddBtn(false);
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -60,48 +62,15 @@ public class OverviewActivity extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Log.i("TEST", "onRefresh called from SwipeRefreshLayout");
-
-                // This method performs the actual data-refresh operation.
-                // The method calls setRefreshing(false) when it's finished.
-                refreshOverview();
-            }
-        });
-
-        setupList();
-    }
-
-    private void refreshOverview() {
-        if (refreshTask == null || refreshTask.getStatus() != AsyncTask.Status.RUNNING) {
-            refreshTask = new RefreshBeansOverviewTask(OverviewActivity.this, mAdapter,
-                    getBaseContext(), swipeRefreshLayout);
-            refreshTask.execute();
+        content = findViewById(R.id.content);
+        if (savedInstanceState == null) {
+            listFragment = new BeansListFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.content, listFragment, "tes")
+                    .disallowAddToBackStack()
+                    .commit();
         }
-    }
-
-    private RecyclerView mRecyclerView;
-    private MyAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    public void setupList() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.overview_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new MyAdapter();
-        mRecyclerView.setAdapter(mAdapter);
-        refreshOverview();
     }
 
     @Override
@@ -138,7 +107,7 @@ public class OverviewActivity extends AppCompatActivity implements NavigationVie
                     for (Bean bean : all) {
                         AppDatabase.getInstance(OverviewActivity.this).beanDao().delete(bean);
                     }
-                    refreshOverview();
+                    // refreshOverview();
                 }
             });
             return true;
@@ -162,6 +131,13 @@ public class OverviewActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public void beanCreated() {
-        refreshOverview();
+        if (listFragment != null) {
+            listFragment.refreshOverview();
+        }
+    }
+
+    @Override
+    public void showAddBtn(boolean isVisible) {
+        floatingActionBtn.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

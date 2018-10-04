@@ -7,12 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".beans.overview.OverviewActivity"
+    tools:context=".beans.OverviewActivity"
     tools:showIn="@layout/app_bar_overview"
     >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/overview_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        />
+
 </android.support.v4.widget.SwipeRefreshLayout>

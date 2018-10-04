@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/default_background"
+    tools:context=".beans.create.CreateBeanFragment"
+    >
+
+    <EditText
+        android:id="@+id/event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/beans_create_fragment_event_placeholder"
+        />
+
+    <ImageView
+        android:id="@+id/rating1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toStartOf="@+id/rating2"
+        android:layout_marginStart="15dp"
+        android:layout_alignTop="@+id/rating2"
+        android:src="@drawable/ic_rating"
+        />
+
+    <ImageView
+        android:id="@+id/rating2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/event"
+        android:src="@drawable/ic_rating"
+        />
+
+    <ImageView
+        android:id="@+id/rating3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toEndOf="@+id/rating2"
+        android:layout_marginEnd="15dp"
+        android:layout_alignTop="@+id/rating2"
+        android:src="@drawable/ic_rating"
+        />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rating2"
+        />
+
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/beans_create_fragment_create_btn"
+        />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/beans_create_fragment_cancel_btn"
+        />
+
+</RelativeLayout>

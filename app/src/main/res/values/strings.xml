@@ -7,6 +7,8 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Create beans fragment -->
+    <string name="beans_create_fragment_event_placeholder">Create</string>
+    <string name="beans_create_fragment_create_btn">Create</string>
+    <string name="beans_create_fragment_cancel_btn">Cancel</string>
 </resources>

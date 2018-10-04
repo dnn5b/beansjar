@@ -10,19 +10,19 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import beansjar.djimpanse.com.beansjar.AppDatabase;
-import beansjar.djimpanse.com.beansjar.beans.overview.MyAdapter;
+import beansjar.djimpanse.com.beansjar.beans.list.BeansListAdapter;
 
 
 public class RefreshBeansOverviewTask extends AsyncTask<Void, Void, List<Bean>> {
 
     private final Context context;
-    private final MyAdapter adapter;
+    private final BeansListAdapter adapter;
     private final SwipeRefreshLayout refreshLayout;
 
     //Prevent leak
     private WeakReference<Activity> weakActivity;
 
-    public RefreshBeansOverviewTask(Activity activity, MyAdapter adapter, Context context, SwipeRefreshLayout refreshLayout) {
+    public RefreshBeansOverviewTask(Activity activity, BeansListAdapter adapter, Context context, SwipeRefreshLayout refreshLayout) {
         weakActivity = new WeakReference<>(activity);
         this.context = context;
         this.adapter = adapter;

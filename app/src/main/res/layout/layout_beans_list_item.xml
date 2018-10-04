@@ -7,4 +7,5 @@
     android:layout_weight="1"
     android:padding="10dp"
     android:text="Event"
+    android:textColor="@color/default_text"
     />

@@ -6,7 +6,7 @@
     "entities": [
       {
         "tableName": "beans",
-        "createSql": "CREATE TABLE IF NOT EXISTS '${TABLE_NAME}' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'event' TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS '${TABLE_NAME}' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'event' TEXT, 'rating' INTEGER, 'date' INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -17,6 +17,16 @@
             "fieldPath": "event",
             "columnName": "event",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -30,7 +40,7 @@
       }
     ],
     "setupQueries": [
-      "CREATE TABLE IF NOT EXISTS beans (id INTEGER PRIMARY KEY, event TEXT)"
+      "CREATE TABLE IF NOT EXISTS beans (id INTEGER PRIMARY KEY, event TEXT, rating INTEGER, date INTEGER)"
     ]
   }
 }
