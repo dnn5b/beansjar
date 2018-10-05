@@ -46,6 +46,9 @@ public class BeansListAdapterTest {
         tut.buildListWithHeadings(originalList);
 
         assertEquals(6, tut.mDataset.size());
+        assertTrue(tut.mDataset.get(0).isHeader());
+        assertTrue(tut.mDataset.get(2).isHeader());
+        assertTrue(tut.mDataset.get(4).isHeader());
     }
 
     @Test
@@ -53,12 +56,28 @@ public class BeansListAdapterTest {
         mockOriginalBean(2019, 10, 05, "event3");
         mockOriginalBean(2018, 10, 05, "event1");
         mockOriginalBean(2018, 12, 05, "event2");
-        mockOriginalBean(2022, 1, 05, "event2");
+        mockOriginalBean(2022, 1, 05, "event4");
 
 
         tut.buildListWithHeadings(originalList);
 
         assertEquals(8, tut.mDataset.size());
+        assertTrue(tut.mDataset.get(0).isHeader());
+        assertTrue(tut.mDataset.get(2).isHeader());
+        assertTrue(tut.mDataset.get(4).isHeader());
+        assertTrue(tut.mDataset.get(6).isHeader());
+    }
+
+    @Test
+    public void buildListWith2DifferentDates() {
+        mockOriginalBean(2018, 10, 05, "event1");
+        mockOriginalBean(2018, 10, 13, "event2");
+
+        tut.buildListWithHeadings(originalList);
+
+        assertEquals(4, tut.mDataset.size());
+        assertTrue(tut.mDataset.get(0).isHeader());
+        assertTrue(tut.mDataset.get(2).isHeader());
     }
 
     @Test
@@ -84,6 +103,9 @@ public class BeansListAdapterTest {
         assertEquals(0, tut.mDataset.size());
     }
 
+    /**
+     * Creates a {@link Bean} with the passed data and adds it to {@link #originalList}.
+     */
     private void mockOriginalBean(int year, int month, int day, String event) {
         Bean bean = new Bean();
         bean.setEvent(event);

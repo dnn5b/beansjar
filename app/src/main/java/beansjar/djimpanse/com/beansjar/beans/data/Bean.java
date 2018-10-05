@@ -8,6 +8,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.time.LocalDate;
 
+import beansjar.djimpanse.com.beansjar.util.StringUtils;
+
 import static beansjar.djimpanse.com.beansjar.beans.data.Bean.TABLE_NAME;
 
 
@@ -81,5 +83,9 @@ public class Bean {
 
     public void setHeader(boolean header) {
         isHeader = header;
+    }
+
+    public boolean isValid() {
+        return StringUtils.isNotEmpty(event) && rating != null && date != null;
     }
 }

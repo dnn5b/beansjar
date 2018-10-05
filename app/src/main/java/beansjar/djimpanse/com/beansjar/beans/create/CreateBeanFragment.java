@@ -9,14 +9,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.Executors;
 
 import beansjar.djimpanse.com.beansjar.AppDatabase;
@@ -29,13 +28,10 @@ public class CreateBeanFragment extends Fragment {
 
     private EditText eventTxt;
     private CalendarView calendarView;
-
     private ImageView rating1;
     private ImageView rating2;
     private ImageView rating3;
-
     private Bean mBean;
-
     private OnFragmentInteractionListener mListener;
 
     public CreateBeanFragment() {
@@ -53,7 +49,6 @@ public class CreateBeanFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +65,8 @@ public class CreateBeanFragment extends Fragment {
         eventTxt = view.findViewById(R.id.event);
         calendarView = view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((calView, year, month, day) -> {
-                Calendar c = Calendar.getInstance();
-                c.set(year, month, day);
-            mBean.setDate(LocalDate.of(year, month, day));
+            // Month is 0 based in widget
+            mBean.setDate(LocalDate.of(year, month + 1, day));
         });
         rating1 = view.findViewById(R.id.rating1);
         applyColorFilterOnView(rating1, false);
@@ -116,20 +110,36 @@ public class CreateBeanFragment extends Fragment {
         }
     }
 
+    /**
+     * Hides the keyboard if showing,
+     */
     private void close() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         mListener.showAddBtn(true);
+
+        // Check if no view has focus and then hide the keyboard
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
     public void createBean() {
         mBean.setEvent(eventTxt.getText().toString());
 
-        Executors.newSingleThreadScheduledExecutor().execute(() ->
-            AppDatabase.getInstance(getActivity()).beanDao().insertAll(mBean)
-        );
+        if (mBean.isValid()) {
+            Executors.newSingleThreadScheduledExecutor().execute(() -> AppDatabase.getInstance
+                    (getActivity()).beanDao().insertAll(mBean));
+            close();
+            mListener.beanCreated();
 
-        close();
-        mListener.beanCreated();
+        } else {
+            Toast.makeText(getActivity(), R.string.beans_create_fragment_toast_data_missing,
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

@@ -33,8 +33,8 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
-            TextView dateText = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout
-                    .layout_beans_list_heading, parent, false);
+            TextView dateText = (TextView) LayoutInflater.from(parent.getContext()).inflate(R
+                    .layout.layout_beans_list_heading, parent, false);
             return new HeadingViewHolder(dateText);
 
         } else {
@@ -85,18 +85,19 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     /**
-     * Adds all passed beans to {@link #mDataset} so they will be shown in the UI. Also adds a header object
+     * Adds all passed beans to {@link #mDataset} so they will be shown in the UI. Also adds a
+     * header object
      * containing the date into the list.
      *
-     * @param beans
-     * the list of all beans to show
+     * @param beans the list of all beans to show
      */
     protected void buildListWithHeadings(List<Bean> beans) {
         List<Bean> newListWithHeadings = new ArrayList<>();
         if (beans != null && !beans.isEmpty()) {
 
             // Sort by date
-            beans= beans.stream().sorted((b1, b2) -> b1.getDate().isAfter(b2.getDate()) ? 1 : -1).collect(Collectors.toList());
+            beans = beans.stream().sorted((b1, b2) -> b1.getDate().isAfter(b2.getDate()) ? 1 :
+                    -1).collect(Collectors.toList());
 
             // Add headings
             newListWithHeadings.add(new Bean(beans.get(0).getDate(), true));
@@ -108,12 +109,13 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     newListWithHeadings.add(bean);
 
                 } else {
+                    newListWithHeadings.add(bean);
+
                     // heading if date is different
                     Bean nextBean = beans.get(i + 1);
                     if (!bean.getDate().equals(nextBean.getDate())) {
                         newListWithHeadings.add(new Bean(nextBean.getDate(), true));
                     }
-                    newListWithHeadings.add(bean);
                 }
             }
         }

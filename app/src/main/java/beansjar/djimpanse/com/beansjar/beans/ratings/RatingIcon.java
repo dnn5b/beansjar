@@ -68,7 +68,6 @@ public class RatingIcon extends android.support.v7.widget.AppCompatImageView {
      */
     public void colorRedOrHide(BeanRatingEnum itemRatingEnum) {
         boolean apply = itemRatingEnum.getValue() >= ratingEnum.getValue();
-
         if (apply) {
             this.setVisibility(View.VISIBLE);
             this.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
