@@ -3,37 +3,26 @@ package beansjar.djimpanse.com.beansjar.beans.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
+import beansjar.djimpanse.com.beansjar.beans.ratings.RatingIcon;
 
 
-public class BeansListAdapter extends RecyclerView.Adapter<BeansListAdapter.MyViewHolder> {
+public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    private List<Bean> mDataset;
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        // each data item is just a string in this case
-        public TextView mTextView;
-
-        public MyViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
-        }
-    }
+    protected List<Bean> mDataset;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public BeansListAdapter() {
@@ -42,66 +31,37 @@ public class BeansListAdapter extends RecyclerView.Adapter<BeansListAdapter.MyVi
 
     // Create new views (invoked by the layout manager)
     @Override
-    public BeansListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        TextView v;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
-            v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout
+            TextView dateText = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout
                     .layout_beans_list_heading, parent, false);
-        } else {
-            v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout
-                    .layout_beans_list_item, parent, false);
+            return new HeadingViewHolder(dateText);
 
+        } else {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout
+                    .layout_beans_list_item, parent, false);
+            return new ItemViewHolder(v);
         }
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         Bean item = mDataset.get(position);
 
-        String text;
         if (item.isHeader()) {
-            text = item.getDate().format(DateTimeFormatter.ISO_DATE);
+            String text = item.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            ((HeadingViewHolder) holder).dateTextView.setText(text);
+
         } else {
-            text = item.getEvent();
-            text += item.getRating() == null ? "" : " (" + item.getRating().getValue() + ")";
-
-        }
-        holder.mTextView.setText(text);
-
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return mDataset.size();
-    }
-
-    public void refreshData(List<Bean> beans) {
-        if (beans != null && !beans.isEmpty()) {
-
-            List<Bean> newListWithHeadings = new ArrayList<>();
-
-            // Add first heading
-            newListWithHeadings.add(new Bean(beans.get(0).getDate(), true));
-
-            for (int i = 0; i < (beans.size() - 1); i++) {
-                Bean bean = beans.get(i);
-                Bean nextBean = beans.get(i + 1);
-                if (bean.getDate().isEqual((nextBean.getDate()))) {
-                    newListWithHeadings.add(new Bean(nextBean.getDate(), true));
-                }
-                newListWithHeadings.add(bean);
-            }
-
-            mDataset.clear();
-            mDataset.addAll(newListWithHeadings);
-            notifyDataSetChanged();
+            String text = item.getEvent();
+            ItemViewHolder itemViewHolder = ((ItemViewHolder) holder);
+            itemViewHolder.eventTextView.setText(text);
+            itemViewHolder.rating1.colorRedOrHide(item.getRating());
+            itemViewHolder.rating2.colorRedOrHide(item.getRating());
+            itemViewHolder.rating3.colorRedOrHide(item.getRating());
         }
     }
 
@@ -111,5 +71,77 @@ public class BeansListAdapter extends RecyclerView.Adapter<BeansListAdapter.MyVi
             return TYPE_HEADER;
         }
         return TYPE_ITEM;
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
+    }
+
+    public void refreshData(List<Bean> beans) {
+        buildListWithHeadings(beans);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Adds all passed beans to {@link #mDataset} so they will be shown in the UI. Also adds a header object
+     * containing the date into the list.
+     *
+     * @param beans
+     * the list of all beans to show
+     */
+    protected void buildListWithHeadings(List<Bean> beans) {
+        List<Bean> newListWithHeadings = new ArrayList<>();
+        if (beans != null && !beans.isEmpty()) {
+
+            // Sort by date
+            beans= beans.stream().sorted((b1, b2) -> b1.getDate().isAfter(b2.getDate()) ? 1 : -1).collect(Collectors.toList());
+
+            // Add headings
+            newListWithHeadings.add(new Bean(beans.get(0).getDate(), true));
+            for (int i = 0; i < beans.size(); i++) {
+                Bean bean = beans.get(i);
+
+                if ((beans.size() - 1) == i) {
+                    // last bean will be just added
+                    newListWithHeadings.add(bean);
+
+                } else {
+                    // heading if date is different
+                    Bean nextBean = beans.get(i + 1);
+                    if (!bean.getDate().equals(nextBean.getDate())) {
+                        newListWithHeadings.add(new Bean(nextBean.getDate(), true));
+                    }
+                    newListWithHeadings.add(bean);
+                }
+            }
+        }
+        mDataset.clear();
+        mDataset.addAll(newListWithHeadings);
+    }
+
+    private static class HeadingViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView dateTextView;
+
+        public HeadingViewHolder(TextView v) {
+            super(v);
+            dateTextView = v;
+        }
+    }
+
+    private static class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView eventTextView;
+        public RatingIcon rating1, rating2, rating3;
+
+        public ItemViewHolder(View v) {
+            super(v);
+            eventTextView = v.findViewById(R.id.event);
+            rating1 = v.findViewById(R.id.rating1);
+            rating2 = v.findViewById(R.id.rating2);
+            rating3 = v.findViewById(R.id.rating3);
+        }
     }
 }

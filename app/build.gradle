@@ -47,6 +47,7 @@ dependencies {
     // Testing
     testImplementation "junit:junit:4.12"
     testImplementation "android.arch.persistence.room:compiler:$room_version"
+    testImplementation "org.mockito:mockito-core:2.+"
 
     // Android integration test
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

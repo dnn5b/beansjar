@@ -16,6 +16,7 @@ import java.util.List;
 
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.data.BeanDao;
+import beansjar.djimpanse.com.beansjar.beans.data.BeanRatingEnum;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,14 +38,16 @@ public class SimpleEntityReadWriteTest {
     }
 
     @Test
-    public void writeUserAndReadInList() {
+    public void writeBeanAndReadInList() {
         Bean bean = new Bean();
         bean.setEvent("eventName");
+        bean.setRating(BeanRatingEnum.MEDIUM);
         mUserDao.insertAll(bean);
 
         List<Bean> all = mUserDao.getAll();
 
         assertEquals(1, all.size());
-        assertEquals("eventsName", all.get(0).getEvent());
+        assertEquals("eventName", all.get(0).getEvent());
+        assertEquals(2, all.get(0).getRating().getValue());
     }
 }
