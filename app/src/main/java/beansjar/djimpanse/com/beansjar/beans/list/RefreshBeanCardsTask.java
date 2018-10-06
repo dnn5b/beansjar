@@ -1,4 +1,4 @@
-package beansjar.djimpanse.com.beansjar.beans.data;
+package beansjar.djimpanse.com.beansjar.beans.list;
 
 
 import android.app.Activity;
@@ -10,19 +10,21 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import beansjar.djimpanse.com.beansjar.AppDatabase;
-import beansjar.djimpanse.com.beansjar.beans.list.BeansListAdapter;
+import beansjar.djimpanse.com.beansjar.beans.data.Bean;
+import beansjar.djimpanse.com.beansjar.beans.data.BeanDao;
 
 
-public class RefreshBeansOverviewTask extends AsyncTask<Void, Void, List<Bean>> {
+public class RefreshBeanCardsTask extends AsyncTask<Void, Void, List<Bean>> {
 
     private final Context context;
-    private final BeansListAdapter adapter;
+    private final BeanCardsAdapter adapter;
     private final SwipeRefreshLayout refreshLayout;
 
-    //Prevent leak
+    // Prevent leak
     private WeakReference<Activity> weakActivity;
 
-    public RefreshBeansOverviewTask(Activity activity, BeansListAdapter adapter, Context context, SwipeRefreshLayout refreshLayout) {
+    public RefreshBeanCardsTask(Activity activity, BeanCardsAdapter adapter, Context context,
+                                SwipeRefreshLayout refreshLayout) {
         weakActivity = new WeakReference<>(activity);
         this.context = context;
         this.adapter = adapter;
@@ -44,12 +46,7 @@ public class RefreshBeansOverviewTask extends AsyncTask<Void, Void, List<Bean>> 
         adapter.refreshData(beans);
 
         if (refreshLayout.isRefreshing()) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    refreshLayout.setRefreshing(false);
-                }
-            });
+            activity.runOnUiThread(() -> refreshLayout.setRefreshing(false));
 
         }
     }

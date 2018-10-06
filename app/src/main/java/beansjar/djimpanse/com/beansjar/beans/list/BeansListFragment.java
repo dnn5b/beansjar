@@ -13,15 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import beansjar.djimpanse.com.beansjar.R;
-import beansjar.djimpanse.com.beansjar.beans.data.RefreshBeansOverviewTask;
 
 
 public class BeansListFragment extends Fragment {
 
-    private RefreshBeansOverviewTask refreshTask;
+    private RefreshBeanCardsTask refreshTask;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private BeansListAdapter mAdapter;
+    private BeanCardsAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public BeansListFragment() {
@@ -29,25 +28,25 @@ public class BeansListFragment extends Fragment {
     }
 
     public void setupList(View view) {
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.overview_recycler_view);
+        mRecyclerView = view.findViewById(R.id.overview_recycler_view);
 
         // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+        // in content do not change the layout_beans_card size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
+        // use a linear layout_beans_card manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new BeansListAdapter();
+        mAdapter = new BeanCardsAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
         refreshOverview();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout_beans_card for this fragment
         View view = inflater.inflate(R.layout.fragment_beans_list, container, false);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
@@ -66,7 +65,7 @@ public class BeansListFragment extends Fragment {
 
     public void refreshOverview() {
         if (refreshTask == null || refreshTask.getStatus() != AsyncTask.Status.RUNNING) {
-            refreshTask = new RefreshBeansOverviewTask(getActivity(), mAdapter,
+            refreshTask = new RefreshBeanCardsTask(getActivity(), mAdapter,
                     getActivity(), swipeRefreshLayout);
             refreshTask.execute();
         }

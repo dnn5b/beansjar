@@ -2,8 +2,14 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#e53935</color>
+    <color name="colorAccent">#880e4f</color>
 
     <color name="default_background">#ffffff</color>
     <color name="default_text">#000000</color>
+    <color name="activity_background">#282828</color>
+
+    <!-- Bean cards -->
+    <color name="bean_card_background">#b0ffd2c4</color>
+    <color name="bean_card_date_background">#c7282828</color>
+    <color name="bean_card_date_foreground">#ffffff</color>
 </resources>

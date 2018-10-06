@@ -59,7 +59,7 @@ public class CreateBeanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout_beans_card for this fragment
         View view = inflater.inflate(R.layout.fragment_beans_create, container, false);
 
         eventTxt = view.findViewById(R.id.event);

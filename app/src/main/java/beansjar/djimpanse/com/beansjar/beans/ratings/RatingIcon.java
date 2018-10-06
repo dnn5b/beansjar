@@ -61,7 +61,7 @@ public class RatingIcon extends android.support.v7.widget.AppCompatImageView {
     /**
      * Passes a {@link BeanRatingEnum} representing an event item. Depending on the
      * {@link #ratingEnum} this view will be colored red or hidden.
-     * Typically used in the {@link beansjar.djimpanse.com.beansjar.beans.list.BeansListAdapter}
+     * Typically used in the {@link BeansListAdapterSave}
      * to show the ratings of a list item.
      *
      * @param itemRatingEnum the item's rating
