@@ -12,6 +12,7 @@ import java.util.List;
 
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
+import beansjar.djimpanse.com.beansjar.beans.delete.DeleteBeanCallback;
 import beansjar.djimpanse.com.beansjar.beans.ratings.RatingIcon;
 
 
@@ -20,18 +21,19 @@ import beansjar.djimpanse.com.beansjar.beans.ratings.RatingIcon;
  */
 public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private DeleteBeanCallback callback;
     private List<Bean> beans;
 
-    protected BeansListAdapter(List<Bean> beans) {
-        this.beans
-                 = beans;
+    protected BeansListAdapter(List<Bean> beans, DeleteBeanCallback callback) {
+        this.beans = beans;
+        this.callback = callback;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .layout_beans_list_item, parent, false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, this);
     }
 
     @Override
@@ -45,23 +47,39 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         viewHolder.rating3.colorRedOrHide(item.getRating());
     }
 
-
     @Override
     public int getItemCount() {
         return beans.size();
     }
 
-    private static class ViewHolder extends RecyclerView.ViewHolder {
+    private void triggerDelete(int itemPosition) {
+        callback.deleteBean(beans.get(itemPosition));
+    }
 
+    private static class ViewHolder extends RecyclerView.ViewHolder implements View
+            .OnLongClickListener {
+
+        private BeansListAdapter adapter;
         public TextView eventTextView;
         public RatingIcon rating1, rating2, rating3;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, BeansListAdapter adapter) {
             super(v);
+            this.adapter = adapter;
+
             eventTextView = v.findViewById(R.id.event);
             rating1 = v.findViewById(R.id.rating1);
             rating2 = v.findViewById(R.id.rating2);
             rating3 = v.findViewById(R.id.rating3);
+
+            v.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            adapter.triggerDelete(getAdapterPosition());
+            return true;
         }
     }
+
 }

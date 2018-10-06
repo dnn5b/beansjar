@@ -15,6 +15,7 @@ import java.util.List;
 
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
+import beansjar.djimpanse.com.beansjar.beans.delete.DeleteBeanCallback;
 
 
 /**
@@ -23,12 +24,15 @@ import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Activity activity;
+    private final DeleteBeanCallback callback;
+
     protected List<BeansCardModel> mDataset;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BeanCardsAdapter(Activity activity) {
+    public BeanCardsAdapter(Activity activity, DeleteBeanCallback callback) {
         this.mDataset = new ArrayList<>();
         this.activity = activity;
+        this.callback = callback;
     }
 
     // Create new views (invoked by the layout_beans_card manager)
@@ -58,7 +62,7 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         //BeansListAdapterSave adapter = new BeansListAdapterSave();
 
-        RecyclerView.Adapter adapt = new BeansListAdapter(item.getBeans());
+        RecyclerView.Adapter adapt = new BeansListAdapter(item.getBeans(), callback);
         viewHolder.recyclerView.setAdapter(adapt);
     }
 

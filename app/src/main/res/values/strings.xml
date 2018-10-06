@@ -12,4 +12,10 @@
     <string name="beans_create_fragment_create_btn">Create</string>
     <string name="beans_create_fragment_cancel_btn">Cancel</string>
     <string name="beans_create_fragment_toast_data_missing">Data missing!</string>
+
+    <!-- Delete beans confirm dialog -->
+    <string name="beans_delete_confirm_dialog_text">You\'re about to delete \'%s\' from %s.\nAre you sure?</string>
+    <string name="beans_delete_confirm_dialog_delete_btn">Delete</string>
+    <string name="beans_delete_confirm_dialog_cancel_btn">Cancel</string>
+
 </resources>

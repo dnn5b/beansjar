@@ -13,9 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import beansjar.djimpanse.com.beansjar.R;
+import beansjar.djimpanse.com.beansjar.beans.data.Bean;
+import beansjar.djimpanse.com.beansjar.beans.delete.ConfirmDeleteBeanDialog;
+import beansjar.djimpanse.com.beansjar.beans.delete.DeleteBeanCallback;
 
 
-public class BeansListFragment extends Fragment {
+public class BeansListFragment extends Fragment implements DeleteBeanCallback {
 
     private RefreshBeanCardsTask refreshTask;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -39,7 +42,7 @@ public class BeansListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new BeanCardsAdapter(getActivity());
+        mAdapter = new BeanCardsAdapter(getActivity(), this);
         mRecyclerView.setAdapter(mAdapter);
         refreshOverview();
     }
@@ -71,4 +74,8 @@ public class BeansListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void deleteBean(Bean bean) {
+        new ConfirmDeleteBeanDialog(getActivity(), bean).show();
+    }
 }
