@@ -21,8 +21,12 @@ public class Bean {
      */
     public static final String TABLE_NAME = "beans";
 
+    /** #
+     * Initializes by default with {@link beansjar.djimpanse.com.beansjar.beans.data.BeanRatingEnum}.
+     *
+     */
     public Bean() {
-
+        this.rating = BeanRatingEnum.NO;
     }
 
     public Bean(LocalDate date, boolean isHeader) {
@@ -86,6 +90,6 @@ public class Bean {
     }
 
     public boolean isValid() {
-        return StringUtils.isNotEmpty(event) && rating != null && date != null;
+        return StringUtils.isNotEmpty(event) && date != null;
     }
 }

@@ -99,16 +99,12 @@ private BeansListFragment listFragment;
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
-                @Override
-                public void run() {
-                    List<Bean> all = AppDatabase.getInstance(OverviewActivity.this).beanDao()
+            Executors.newSingleThreadScheduledExecutor().execute(() -> {
+                List<Bean> all = AppDatabase.getInstance(OverviewActivity.this).beanDao()
                             .getAll();
                     for (Bean bean : all) {
                         AppDatabase.getInstance(OverviewActivity.this).beanDao().delete(bean);
                     }
-                    // refreshOverview();
-                }
             });
             return true;
         }

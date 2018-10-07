@@ -1,7 +1,6 @@
 package beansjar.djimpanse.com.beansjar.beans.list;
 
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;

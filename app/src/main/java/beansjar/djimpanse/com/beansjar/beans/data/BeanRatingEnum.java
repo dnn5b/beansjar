@@ -6,6 +6,8 @@ package beansjar.djimpanse.com.beansjar.beans.data;
  */
 public enum BeanRatingEnum {
 
+    NO(0),
+
     LOW(1),
 
     MEDIUM(2),

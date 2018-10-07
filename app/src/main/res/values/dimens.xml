@@ -8,6 +8,6 @@
 
     <!-- Beans list -->
     <dimen name="beans_list_heading_text_size">18dp</dimen>
-    <dimen name="beans_list_item_text_size">20dp</dimen>
+    <dimen name="beans_list_item_text_size">16dp</dimen>
 
 </resources>

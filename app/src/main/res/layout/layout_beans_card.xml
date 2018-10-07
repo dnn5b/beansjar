@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@color/colorPrimary"
-            android:src="@drawable/blubb"
+            android:src="@color/colorPrimaryDark"
             android:scaleType="centerCrop"
             />
 

@@ -32,6 +32,8 @@ public class Converters {
         }
 
         switch(rating) {
+            case 0:
+                return BeanRatingEnum.NO;
             case 1:
                 return BeanRatingEnum.LOW;
             case 2:
