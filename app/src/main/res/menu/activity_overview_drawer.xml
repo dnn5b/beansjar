@@ -13,17 +13,17 @@
     <item android:title="Todo">
         <menu>
             <item
+                android:id="@+id/nav_0"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Short click opens detail view"/>
+            <item
                 android:id="@+id/nav_1"
                 android:icon="@drawable/ic_menu_slideshow"
-                android:title="Extend bean (date, rating,...)"/>
+                android:title="Extend bean (pictures)"/>
             <item
-                android:id="@+id/nav_2"
+                android:id="@+id/nav_7"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="German translation"/>
-            <item
-                android:id="@+id/nav_3"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Animation"/>
+                android:title="List shows random picture of day"/>
             <item
                 android:id="@+id/nav_4"
                 android:icon="@drawable/ic_menu_manage"
@@ -32,6 +32,14 @@
                 android:id="@+id/nav_5"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Search function"/>
+            <item
+                android:id="@+id/nav_2"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="German translation"/>
+            <item
+                android:id="@+id/nav_3"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Animation"/>
         </menu>
     </item>
 
