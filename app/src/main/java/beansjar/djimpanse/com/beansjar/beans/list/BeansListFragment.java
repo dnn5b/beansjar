@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.delete.ConfirmDeleteBeanDialog;
-import beansjar.djimpanse.com.beansjar.beans.delete.DeleteBeanCallback;
+import beansjar.djimpanse.com.beansjar.beans.details.BeanDetailsFragment;
 
 
-public class BeansListFragment extends Fragment implements DeleteBeanCallback {
+public class BeansListFragment extends Fragment implements BeanClickedCallback {
 
     private RefreshBeanCardsTask refreshTask;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -75,7 +75,17 @@ public class BeansListFragment extends Fragment implements DeleteBeanCallback {
     }
 
     @Override
-    public void deleteBean(Bean bean) {
+    public void onLongClick(Bean bean) {
         new ConfirmDeleteBeanDialog(getActivity(), bean).show();
+    }
+
+    @Override
+    public void onClick(Bean bean) {
+        BeanDetailsFragment detailsFragment = BeanDetailsFragment.newInstance(bean);
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content, detailsFragment, BeanDetailsFragment.class.getSimpleName())
+                .addToBackStack(BeanDetailsFragment.class.getSimpleName())
+                .commit();
     }
 }

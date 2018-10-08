@@ -13,10 +13,6 @@
     <item android:title="Todo">
         <menu>
             <item
-                android:id="@+id/nav_0"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="Short click opens detail view"/>
-            <item
                 android:id="@+id/nav_1"
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="Extend bean (pictures)"/>

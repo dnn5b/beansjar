@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,16 +115,17 @@ public class CreateBeanFragment extends Fragment {
      * Hides the keyboard if showing,
      */
     private void close() {
-        mListener.showAddBtn(true);
-
         // Check if no view has focus and then hide the keyboard
         View view = getActivity().getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context
+                    .INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        manager.beginTransaction().remove(this).commit();
+        manager.popBackStack();
     }
 
     public void createBean() {
@@ -139,7 +141,6 @@ public class CreateBeanFragment extends Fragment {
             Toast.makeText(getActivity(), R.string.beans_create_fragment_toast_data_missing,
                     Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
@@ -151,7 +152,5 @@ public class CreateBeanFragment extends Fragment {
     public interface OnFragmentInteractionListener {
 
         void beanCreated();
-
-        void showAddBtn(boolean isVisible);
     }
 }

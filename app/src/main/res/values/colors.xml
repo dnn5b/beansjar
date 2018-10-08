@@ -6,7 +6,9 @@
 
     <color name="default_background">#ffffff</color>
     <color name="default_text">#000000</color>
-    <color name="activity_background">#282828</color>
+
+    <color name="date_background">#91000000</color>
+    <color name="date_textcolor">#ffffff</color>
 
     <!-- Bean cards -->
     <color name="bean_card_background">#9ba1887f</color>

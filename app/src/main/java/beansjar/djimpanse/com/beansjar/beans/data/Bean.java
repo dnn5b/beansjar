@@ -5,6 +5,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.time.LocalDate;
 
@@ -14,7 +16,7 @@ import static beansjar.djimpanse.com.beansjar.beans.data.Bean.TABLE_NAME;
 
 
 @Entity(tableName = TABLE_NAME)
-public class Bean {
+public class Bean implements Parcelable {
 
     /**
      * The table name of this entity.
@@ -49,6 +51,12 @@ public class Bean {
     @Ignore
     private boolean isHeader;
 
+    protected Bean(Parcel in) {
+        id = in.readInt();
+        event = in.readString();
+        isHeader = in.readByte() != 0;
+    }
+
     public int getId() {
         return id;
     }
@@ -81,15 +89,31 @@ public class Bean {
         this.rating = rating;
     }
 
-    public boolean isHeader() {
-        return isHeader;
-    }
-
-    public void setHeader(boolean header) {
-        isHeader = header;
-    }
-
     public boolean isValid() {
         return StringUtils.isNotEmpty(event) && date != null;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(event);
+        dest.writeLong(date.toEpochDay());
+    }
+
+    public static final Creator<Bean> CREATOR = new Creator<Bean>() {
+        @Override
+        public Bean createFromParcel(Parcel in) {
+            return new Bean(in);
+        }
+
+        @Override
+        public Bean[] newArray(int size) {
+            return new Bean[size];
+        }
+    };
 }

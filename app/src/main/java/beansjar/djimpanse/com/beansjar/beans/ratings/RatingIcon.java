@@ -45,24 +45,14 @@ public class RatingIcon extends android.support.v7.widget.AppCompatImageView {
                 break;
             default:
                 throw new IllegalArgumentException("RatingIcon initiliazed with wrong XML rating " +
-                        "attribute!");
+                        "" + "attribute!");
         }
         arr.recycle();
-    }
-
-    public void applyRedColorFilter(boolean apply) {
-        if (apply) {
-            this.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-        } else {
-            this.clearColorFilter();
-        }
     }
 
     /**
      * Passes a {@link BeanRatingEnum} representing an event item. Depending on the
      * {@link #ratingEnum} this view will be colored red or hidden.
-     * Typically used in the {@link BeansListAdapterSave}
-     * to show the ratings of a list item.
      *
      * @param itemRatingEnum the item's rating
      */
@@ -77,11 +67,4 @@ public class RatingIcon extends android.support.v7.widget.AppCompatImageView {
         }
     }
 
-    public BeanRatingEnum getRatingEnum() {
-        return ratingEnum;
-    }
-
-    public void setRatingEnum(BeanRatingEnum ratingEnum) {
-        this.ratingEnum = ratingEnum;
-    }
 }

@@ -3,8 +3,8 @@ package beansjar.djimpanse.com.beansjar.beans;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -28,29 +27,39 @@ import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.list.BeansListFragment;
 
 
-public class OverviewActivity extends AppCompatActivity implements NavigationView
-        .OnNavigationItemSelectedListener, CreateCallback, OnFragmentInteractionListener {
+public class OverviewActivity extends AppCompatActivity implements CreateCallback,
+        OnFragmentInteractionListener {
 
-    private FrameLayout content;
-private BeansListFragment listFragment;
-    private FloatingActionButton floatingActionBtn;
+    private BeansListFragment mListFragment;
+    private FloatingActionButton mFloatingActionBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        floatingActionBtn = findViewById(R.id.fab);
-        floatingActionBtn.setOnClickListener(view -> {
-                Fragment newFragment = new CreateBeanFragment();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.content, newFragment, "tes")
-                        .disallowAddToBackStack()
-                        .commit();
-                showAddBtn(false);
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(() -> {
+            List<Fragment> fragments = fragmentManager.getFragments();
+            if (fragments != null) {
+                boolean showBtn = false;
+                if (fragments.size() == 1 && fragments.get(0) == mListFragment) {
+                    showBtn = true;
+                }
+                showAddBtn(showBtn);
+            }
+
+        });
+
+        mFloatingActionBtn = findViewById(R.id.fab);
+        mFloatingActionBtn.setOnClickListener(view -> {
+            Fragment newFragment = new CreateBeanFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.content, newFragment,
+                    BeansListFragment.class.getSimpleName()).addToBackStack(BeansListFragment
+                    .class.getSimpleName()).commit();
+            //showAddBtn(false);
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -59,23 +68,16 @@ private BeansListFragment listFragment;
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        content = findViewById(R.id.content);
         if (savedInstanceState == null) {
-            listFragment = new BeansListFragment();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.content, listFragment, "tes")
-                    .disallowAddToBackStack()
-                    .commit();
+            mListFragment = new BeansListFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.content, mListFragment,
+                    "tes").disallowAddToBackStack().commit();
         }
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -100,11 +102,10 @@ private BeansListFragment listFragment;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Executors.newSingleThreadScheduledExecutor().execute(() -> {
-                List<Bean> all = AppDatabase.getInstance(OverviewActivity.this).beanDao()
-                            .getAll();
-                    for (Bean bean : all) {
-                        AppDatabase.getInstance(OverviewActivity.this).beanDao().delete(bean);
-                    }
+                List<Bean> all = AppDatabase.getInstance(OverviewActivity.this).beanDao().getAll();
+                for (Bean bean : all) {
+                    AppDatabase.getInstance(OverviewActivity.this).beanDao().delete(bean);
+                }
             });
             return true;
         }
@@ -112,28 +113,15 @@ private BeansListFragment listFragment;
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        //if (id == R.id.nav_camera) {
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     @Override
     public void beanCreated() {
-        if (listFragment != null) {
-            listFragment.refreshOverview();
+        if (mListFragment != null) {
+            // TODO why does refresh after create / delete not work?
+            mListFragment.refreshOverview();
         }
     }
 
-    @Override
-    public void showAddBtn(boolean isVisible) {
-        floatingActionBtn.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    private void showAddBtn(boolean isVisible) {
+        mFloatingActionBtn.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

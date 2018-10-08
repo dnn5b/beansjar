@@ -15,7 +15,6 @@ import java.util.List;
 
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
-import beansjar.djimpanse.com.beansjar.beans.delete.DeleteBeanCallback;
 
 
 /**
@@ -24,12 +23,12 @@ import beansjar.djimpanse.com.beansjar.beans.delete.DeleteBeanCallback;
 public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Activity activity;
-    private final DeleteBeanCallback callback;
+    private final BeanClickedCallback callback;
 
     protected List<BeansCardModel> mDataset;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BeanCardsAdapter(Activity activity, DeleteBeanCallback callback) {
+    public BeanCardsAdapter(Activity activity, BeanClickedCallback callback) {
         this.mDataset = new ArrayList<>();
         this.activity = activity;
         this.callback = callback;

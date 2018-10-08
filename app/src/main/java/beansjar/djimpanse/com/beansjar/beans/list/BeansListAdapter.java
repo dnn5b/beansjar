@@ -12,7 +12,6 @@ import java.util.List;
 
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
-import beansjar.djimpanse.com.beansjar.beans.delete.DeleteBeanCallback;
 import beansjar.djimpanse.com.beansjar.beans.ratings.RatingIcon;
 
 
@@ -21,10 +20,10 @@ import beansjar.djimpanse.com.beansjar.beans.ratings.RatingIcon;
  */
 public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private DeleteBeanCallback callback;
+    private BeanClickedCallback callback;
     private List<Bean> beans;
 
-    protected BeansListAdapter(List<Bean> beans, DeleteBeanCallback callback) {
+    protected BeansListAdapter(List<Bean> beans, BeanClickedCallback callback) {
         this.beans = beans;
         this.callback = callback;
     }
@@ -52,12 +51,16 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return beans.size();
     }
 
-    private void triggerDelete(int itemPosition) {
-        callback.deleteBean(beans.get(itemPosition));
+    private void beanItemLongClicked(int itemPosition) {
+        callback.onLongClick(beans.get(itemPosition));
+    }
+
+    private void beanItemClicked(int itemPosition) {
+        callback.onClick(beans.get(itemPosition));
     }
 
     private static class ViewHolder extends RecyclerView.ViewHolder implements View
-            .OnLongClickListener {
+            .OnLongClickListener, View.OnClickListener {
 
         private BeansListAdapter adapter;
         public TextView eventTextView;
@@ -73,12 +76,18 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             rating3 = v.findViewById(R.id.rating3);
 
             v.setOnLongClickListener(this);
+            v.setOnClickListener(this);
         }
 
         @Override
         public boolean onLongClick(View v) {
-            adapter.triggerDelete(getAdapterPosition());
+            adapter.beanItemLongClicked(getAdapterPosition());
             return true;
+        }
+
+        @Override
+        public void onClick(View v) {
+            adapter.beanItemClicked(getAdapterPosition());
         }
     }
 
