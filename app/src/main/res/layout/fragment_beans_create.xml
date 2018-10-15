@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="@string/beans_create_fragment_event_placeholder"
         />
 
