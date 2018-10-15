@@ -21,7 +21,8 @@ import java.time.format.DateTimeFormatter;
  */
 public class Image {
 
-    private static final String DATA_TYPE = ".png";
+    private static final String IMG_FOLDER_NAME = "beans_images";
+    private static final String DATA_TYPE = "." + Bitmap.CompressFormat.JPEG.toString();
 
     private final String imageName = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
             + DATA_TYPE;
@@ -52,7 +53,7 @@ public class Image {
         ContextWrapper cw = new ContextWrapper(activity);
 
         // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File directory = cw.getDir(IMG_FOLDER_NAME, Context.MODE_PRIVATE);
 
         // Create imageDir
         File mypath = new File(directory, imageName);
@@ -66,7 +67,7 @@ public class Image {
                     inputUri);
 
             // Compress the BitMap object and write it to the OutputStream
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, fos);
             this.imageAbsolutePath = mypath.getAbsolutePath();
 
         } catch (Exception e) {

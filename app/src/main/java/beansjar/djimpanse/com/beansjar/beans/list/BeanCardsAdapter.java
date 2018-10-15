@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.time.format.DateTimeFormatter;
@@ -50,6 +51,7 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         BeansCardModel item = mDataset.get(position);
 
         ViewHolder viewHolder = ((ViewHolder) holder);
+        viewHolder.titleImageView.setImageBitmap(item.getImage().getBitmap());
         viewHolder.dateTextView.setText(item.getDate().format(DateTimeFormatter.ofPattern("dd" +
                 ".MM.yyyy")));
 
@@ -80,11 +82,13 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView titleImageView;
         private TextView dateTextView;
         private RecyclerView recyclerView;
 
         public ViewHolder(View v) {
             super(v);
+            titleImageView = v.findViewById(R.id.titleImg);
             dateTextView = v.findViewById(R.id.dateTxt);
             recyclerView = v.findViewById(R.id.recyclerView);
         }

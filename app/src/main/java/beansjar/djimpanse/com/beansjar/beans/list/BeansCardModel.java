@@ -3,11 +3,14 @@ package beansjar.djimpanse.com.beansjar.beans.list;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
+import beansjar.djimpanse.com.beansjar.images.Image;
+import beansjar.djimpanse.com.beansjar.util.StringUtils;
 
 
 /**
@@ -17,20 +20,34 @@ import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 public class BeansCardModel {
 
     private LocalDate date;
-
+    private Image image;
     private List<Bean> beans;
 
     public BeansCardModel() {
         this.beans = new ArrayList<>();
     }
 
+    /**
+     * Constructor, that will use one
+     * @param date
+     * @param beans
+     */
     public BeansCardModel(LocalDate date, List<Bean> beans) {
         this.date = date;
         this.beans = beans;
+
+        List<String> imagePaths = beans.stream().map(bean -> bean.getImagePath()).filter(path ->
+                StringUtils.isNotEmpty(path)).collect(Collectors.toList());
+        Collections.shuffle(imagePaths);
+        this.image = new Image(imagePaths.get(0));
     }
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public Image getImage() {
+        return image;
     }
 
     public List<Bean> getBeans() {
@@ -66,4 +83,5 @@ public class BeansCardModel {
                 .collect(Collectors.toList());
 
     }
+
 }
