@@ -1,11 +1,8 @@
 package beansjar.djimpanse.com.beansjar.beans.delete;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-
-import java.lang.ref.WeakReference;
 
 import beansjar.djimpanse.com.beansjar.AppDatabase;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
@@ -29,6 +26,10 @@ public class DeleteBeanTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         BeanDao beanDao = AppDatabase.getInstance(context).beanDao();
         beanDao.delete(bean);
+
+        // TODO handle result
+        bean.getImage().delete();
+
         return true;
     }
 

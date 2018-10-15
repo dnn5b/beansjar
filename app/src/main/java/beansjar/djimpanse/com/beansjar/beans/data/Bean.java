@@ -10,6 +10,7 @@ import android.os.Parcelable;
 
 import java.time.LocalDate;
 
+import beansjar.djimpanse.com.beansjar.images.Image;
 import beansjar.djimpanse.com.beansjar.util.StringUtils;
 
 import static beansjar.djimpanse.com.beansjar.beans.data.Bean.TABLE_NAME;
@@ -23,17 +24,13 @@ public class Bean implements Parcelable {
      */
     public static final String TABLE_NAME = "beans";
 
-    /** #
-     * Initializes by default with {@link beansjar.djimpanse.com.beansjar.beans.data.BeanRatingEnum}.
-     *
+    /**
+     * #
+     * Initializes by default with
+     * {@link beansjar.djimpanse.com.beansjar.beans.data.BeanRatingEnum}.
      */
     public Bean() {
         this.rating = BeanRatingEnum.NO;
-    }
-
-    public Bean(LocalDate date, boolean isHeader) {
-        this.date = date;
-        this.isHeader = isHeader;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -48,13 +45,15 @@ public class Bean implements Parcelable {
     @ColumnInfo(name = "date")
     private LocalDate date;
 
+    @ColumnInfo(name = "image_path")
+    private String imagePath;
+
     @Ignore
-    private boolean isHeader;
+    private Image image;
 
     protected Bean(Parcel in) {
         id = in.readInt();
         event = in.readString();
-        isHeader = in.readByte() != 0;
     }
 
     public int getId() {
@@ -89,6 +88,21 @@ public class Bean implements Parcelable {
         this.rating = rating;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public Image getImage() {
+        if (this.image == null) {
+            this.image = new Image(imagePath);
+        }
+        return this.image;
+    }
+
     public boolean isValid() {
         return StringUtils.isNotEmpty(event) && date != null;
     }
@@ -116,4 +130,5 @@ public class Bean implements Parcelable {
             return new Bean[size];
         }
     };
+
 }

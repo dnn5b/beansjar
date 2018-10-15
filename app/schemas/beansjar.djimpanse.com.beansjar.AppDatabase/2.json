@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "c3fca29a8233ca189dc6e016458dc347",
+    "version": 2,
+    "identityHash": "949ffde5e08ccadf18bc83b180f15a9e",
     "entities": [
       {
         "tableName": "beans",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `event` TEXT, `rating` INTEGER, `date` INTEGER, `image` BLOB)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `event` TEXT, `rating` INTEGER, `date` INTEGER, `image_path` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -33,9 +33,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "image",
-            "columnName": "image",
-            "affinity": "BLOB",
+            "fieldPath": "imagePath",
+            "columnName": "image_path",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
@@ -51,7 +51,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c3fca29a8233ca189dc6e016458dc347\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"949ffde5e08ccadf18bc83b180f15a9e\")"
     ]
   }
 }

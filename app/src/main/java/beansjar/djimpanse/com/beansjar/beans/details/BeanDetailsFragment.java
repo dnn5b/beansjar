@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.time.format.DateTimeFormatter;
@@ -24,6 +25,7 @@ public class BeanDetailsFragment extends Fragment {
     private RatingIcon rating1;
     private RatingIcon rating2;
     private RatingIcon rating3;
+    private ImageView imageView;
     private Bean mBean;
 
     public BeanDetailsFragment() {
@@ -50,6 +52,9 @@ public class BeanDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_beans_details, container, false);
+
+        imageView = view.findViewById(R.id.imageView);
+        imageView.setImageBitmap(mBean.getImage().getBitmap());
 
         eventTxt = view.findViewById(R.id.eventTxt);
         eventTxt.setText(mBean.getEvent());

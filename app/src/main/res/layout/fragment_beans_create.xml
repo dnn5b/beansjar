@@ -54,6 +54,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rating2"
+        android:layout_above="@id/image_name"
+        android:layout_marginBottom="10dp"
+        />
+
+    <TextView
+        android:id="@+id/image_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/btn_select_image"
+        android:layout_alignTop="@+id/btn_select_image"
+        android:layout_alignBottom="@+id/btn_select_image"
+        android:gravity="center_vertical"
+        android:hint="@string/beans_create_fragment_image_name_placeholder"
+        />
+
+    <Button
+        android:id="@+id/btn_select_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_cancel"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentEnd="true"
+        android:text="@string/beans_create_fragment_image_select_button"
         />
 
     <Button
