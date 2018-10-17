@@ -83,7 +83,6 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.overview, menu);
         return true;
     }
@@ -95,7 +94,6 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Executors.newSingleThreadScheduledExecutor().execute(() -> {
                 List<Bean> all = AppDatabase.getInstance(OverviewActivity.this).beanDao().getAll();

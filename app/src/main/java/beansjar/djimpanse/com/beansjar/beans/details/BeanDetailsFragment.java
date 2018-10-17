@@ -20,7 +20,9 @@ public class BeanDetailsFragment extends Fragment {
 
     private static final String ARG_BEAN = "fragment_argument_bean";
 
-    private Bean mBean;
+    private static final  DateTimeFormatter mFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+    protected Bean mBean;
 
     public BeanDetailsFragment() {
         // Required empty public constructor
@@ -50,22 +52,32 @@ public class BeanDetailsFragment extends Fragment {
         ImageView imageView = view.findViewById(R.id.imageView);
         mBean.getImage().loadIntoImageView(imageView);
 
-        TextView eventTxt = view.findViewById(R.id.eventTxt);
-        eventTxt.setText(mBean.getEvent());
+        showEventText(view.findViewById(R.id.eventTxt));
+        showDateText(view.findViewById(R.id.dateTxt));
 
-        TextView dateTxt = view.findViewById(R.id.dateTxt);
-        dateTxt.setText(mBean.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-
-        RatingIcon rating1 = view.findViewById(R.id.rating1);
-        rating1.colorRedOrHide(mBean.getRating());
-
-        RatingIcon rating2 = view.findViewById(R.id.rating2);
-        rating2.colorRedOrHide(mBean.getRating());
-
-        RatingIcon rating3 = view.findViewById(R.id.rating3);
-        rating3.colorRedOrHide(mBean.getRating());
+        showRating(view.findViewById(R.id.rating1));
+        showRating(view.findViewById(R.id.rating2));
+        showRating(view.findViewById(R.id.rating3));
 
         return view;
+    }
+
+    protected void showEventText(TextView eventTxt) {
+        if (eventTxt != null) {
+            eventTxt.setText(mBean.getEvent());
+        }
+    }
+
+    protected void showDateText(TextView dateTxt) {
+        if (dateTxt != null && mBean.getDate() != null) {
+            dateTxt.setText(mFormatter.format(mBean.getDate()));
+        }
+    }
+
+    protected void showRating(RatingIcon rating) {
+        if (rating != null) {
+            rating.colorRedOrHide(mBean.getRating());
+        }
     }
 
 }

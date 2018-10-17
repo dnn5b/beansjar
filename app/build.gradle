@@ -26,6 +26,11 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
+    testOptions {
+        // Enable mock of Android framework classes
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
