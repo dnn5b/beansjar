@@ -51,9 +51,11 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         BeansCardModel item = mDataset.get(position);
 
         ViewHolder viewHolder = ((ViewHolder) holder);
-        viewHolder.titleImageView.setImageBitmap(item.getImage().getBitmap());
         viewHolder.dateTextView.setText(item.getDate().format(DateTimeFormatter.ofPattern("dd" +
                 ".MM.yyyy")));
+        if (item.getImage() != null) {
+            viewHolder.titleImageView.setImageBitmap(item.getImage().getBitmap());
+        }
 
         viewHolder.recyclerView.setHasFixedSize(true);
 

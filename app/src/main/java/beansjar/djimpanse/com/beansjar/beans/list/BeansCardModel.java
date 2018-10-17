@@ -23,12 +23,9 @@ public class BeansCardModel {
     private Image image;
     private List<Bean> beans;
 
-    public BeansCardModel() {
-        this.beans = new ArrayList<>();
-    }
-
     /**
      * Constructor, that will use one
+     *
      * @param date
      * @param beans
      */
@@ -38,8 +35,10 @@ public class BeansCardModel {
 
         List<String> imagePaths = beans.stream().map(bean -> bean.getImagePath()).filter(path ->
                 StringUtils.isNotEmpty(path)).collect(Collectors.toList());
-        Collections.shuffle(imagePaths);
-        this.image = new Image(imagePaths.get(0));
+        if (!imagePaths.isEmpty()) {
+            Collections.shuffle(imagePaths);
+            this.image = new Image(imagePaths.get(0));
+        }
     }
 
     public LocalDate getDate() {
