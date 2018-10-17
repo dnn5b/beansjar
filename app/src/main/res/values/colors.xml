@@ -12,6 +12,7 @@
 
     <!-- Bean cards -->
     <color name="bean_card_background">#9ba1887f</color>
+    <color name="bean_card_list_divider">#c68d6e63</color>
     <color name="bean_card_date_background">#c7282828</color>
     <color name="bean_card_date_foreground">#ffffff</color>
 </resources>

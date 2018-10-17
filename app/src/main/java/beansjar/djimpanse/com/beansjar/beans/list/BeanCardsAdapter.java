@@ -2,6 +2,7 @@ package beansjar.djimpanse.com.beansjar.beans.list;
 
 
 import android.app.Activity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,9 @@ import java.util.List;
 
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
+
+import static android.support.v7.widget.RecyclerView.HORIZONTAL;
+import static android.support.v7.widget.RecyclerView.VERTICAL;
 
 
 /**
@@ -54,7 +58,7 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         viewHolder.dateTextView.setText(item.getDate().format(DateTimeFormatter.ofPattern("dd" +
                 ".MM.yyyy")));
         if (item.getImage() != null) {
-            viewHolder.titleImageView.setImageBitmap(item.getImage().getBitmap());
+           item.getImage().loadIntoImageView(viewHolder.titleImageView, 300, 100);
         }
 
         viewHolder.recyclerView.setHasFixedSize(true);
@@ -62,8 +66,9 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager
                 .VERTICAL, false);
         viewHolder.recyclerView.setLayoutManager(layoutManager);
-
-        //BeansListAdapterSave adapter = new BeansListAdapterSave();
+        DividerItemDecoration itemDecor = new DividerItemDecoration(activity, VERTICAL);
+        itemDecor.setDrawable(activity.getDrawable(R.drawable.divider_bean_list));
+        viewHolder.recyclerView.addItemDecoration(itemDecor);
 
         RecyclerView.Adapter adapt = new BeansListAdapter(item.getBeans(), callback);
         viewHolder.recyclerView.setAdapter(adapt);
