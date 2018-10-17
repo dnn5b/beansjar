@@ -20,12 +20,6 @@ public class BeanDetailsFragment extends Fragment {
 
     private static final String ARG_BEAN = "fragment_argument_bean";
 
-    private TextView eventTxt;
-    private TextView dateTxt;
-    private RatingIcon rating1;
-    private RatingIcon rating2;
-    private RatingIcon rating3;
-    private ImageView imageView;
     private Bean mBean;
 
     public BeanDetailsFragment() {
@@ -53,22 +47,22 @@ public class BeanDetailsFragment extends Fragment {
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_beans_details, container, false);
 
-        imageView = view.findViewById(R.id.imageView);
-        imageView.setImageBitmap(mBean.getImage().getBitmap());
+        ImageView imageView = view.findViewById(R.id.imageView);
+        mBean.getImage().loadIntoImageView(imageView);
 
-        eventTxt = view.findViewById(R.id.eventTxt);
+        TextView eventTxt = view.findViewById(R.id.eventTxt);
         eventTxt.setText(mBean.getEvent());
 
-        dateTxt = view.findViewById(R.id.dateTxt);
+        TextView dateTxt = view.findViewById(R.id.dateTxt);
         dateTxt.setText(mBean.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
-        rating1 = view.findViewById(R.id.rating1);
+        RatingIcon rating1 = view.findViewById(R.id.rating1);
         rating1.colorRedOrHide(mBean.getRating());
 
-        rating2 = view.findViewById(R.id.rating2);
+        RatingIcon rating2 = view.findViewById(R.id.rating2);
         rating2.colorRedOrHide(mBean.getRating());
 
-        rating3 = view.findViewById(R.id.rating3);
+        RatingIcon rating3 = view.findViewById(R.id.rating3);
         rating3.colorRedOrHide(mBean.getRating());
 
         return view;
