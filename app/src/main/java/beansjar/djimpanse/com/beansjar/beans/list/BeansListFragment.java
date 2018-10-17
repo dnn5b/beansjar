@@ -66,8 +66,7 @@ public class BeansListFragment extends Fragment implements BeanClickedCallback {
 
     public void refreshOverview() {
         if (refreshTask == null || refreshTask.getStatus() != AsyncTask.Status.RUNNING) {
-            refreshTask = new RefreshBeanCardsTask(getActivity(), mAdapter,
-                    getActivity(), swipeRefreshLayout);
+            refreshTask = new RefreshBeanCardsTask(getActivity(), mAdapter, swipeRefreshLayout);
             refreshTask.execute();
         }
     }

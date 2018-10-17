@@ -34,9 +34,6 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     protected List<BeansCardModel> mDataset;
 
-
-
-    // Provide a suitable constructor (depends on the kind of dataset)
     public BeanCardsAdapter(Activity activity, BeanClickedCallback callback) {
         this.mDataset = new ArrayList<>();
         this.activity = activity;
@@ -57,8 +54,6 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     // Replace the contents of a view (invoked by the layout_beans_card manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         BeansCardModel item = mDataset.get(position);
 
         ViewHolder viewHolder = ((ViewHolder) holder);

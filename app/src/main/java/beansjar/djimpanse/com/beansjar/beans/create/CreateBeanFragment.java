@@ -41,7 +41,7 @@ public class CreateBeanFragment extends Fragment {
     private ImageView rating3;
     private TextView mImageNameTextView;
     private Bean mBean;
-    private OnFragmentInteractionListener mListener;
+    private CreateCallback mListener;
 
     private Uri selectedImageUri;
 
@@ -52,11 +52,11 @@ public class CreateBeanFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof CreateCallback) {
+            mListener = (CreateCallback) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement " +
-                    "OnFragmentInteractionListener");
+                    "CreateCallback");
         }
     }
 
@@ -182,10 +182,12 @@ public class CreateBeanFragment extends Fragment {
             }
 
             // Trigger creation
-            Executors.newSingleThreadScheduledExecutor().execute(() -> AppDatabase.getInstance
+            new CreateBeanTask(getActivity(), mBean, mListener).execute();
+            /*Executors.newSingleThreadScheduledExecutor().execute(() -> AppDatabase.getInstance
                     (getActivity()).beanDao().insertAll(mBean));
+
+            mListener.beanCreated();*/
             close();
-            mListener.beanCreated();
 
         } else {
             Toast.makeText(getActivity(), R.string.beans_create_fragment_toast_data_missing,
@@ -199,8 +201,4 @@ public class CreateBeanFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-
-        void beanCreated();
-    }
 }

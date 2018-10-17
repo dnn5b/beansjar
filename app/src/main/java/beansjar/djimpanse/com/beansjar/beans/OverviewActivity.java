@@ -20,15 +20,12 @@ import java.util.concurrent.Executors;
 import beansjar.djimpanse.com.beansjar.AppDatabase;
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.create.CreateBeanFragment;
-import beansjar.djimpanse.com.beansjar.beans.create.CreateBeanFragment
-        .OnFragmentInteractionListener;
 import beansjar.djimpanse.com.beansjar.beans.create.CreateCallback;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.list.BeansListFragment;
 
 
-public class OverviewActivity extends AppCompatActivity implements CreateCallback,
-        OnFragmentInteractionListener {
+public class OverviewActivity extends AppCompatActivity implements CreateCallback {
 
     private BeansListFragment mListFragment;
     private FloatingActionButton mFloatingActionBtn;
@@ -115,7 +112,6 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
     @Override
     public void beanCreated() {
         if (mListFragment != null) {
-            // TODO why does refresh after create / delete not work?
             mListFragment.refreshOverview();
         }
     }
