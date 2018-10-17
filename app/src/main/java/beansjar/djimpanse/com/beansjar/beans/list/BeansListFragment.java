@@ -54,8 +54,6 @@ public class BeansListFragment extends Fragment implements BeanClickedCallback {
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-                Log.i("TEST", "onRefresh called from SwipeRefreshLayout");
-
                 // This method performs the actual data-refresh operation.
                 // The method calls setRefreshing(false) when it's finished.
                 refreshOverview();

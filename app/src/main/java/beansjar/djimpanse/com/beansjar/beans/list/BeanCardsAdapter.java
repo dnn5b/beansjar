@@ -27,16 +27,23 @@ import static android.support.v7.widget.RecyclerView.VERTICAL;
  */
 public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static DividerItemDecoration itemDecoration;
+
     private final Activity activity;
     private final BeanClickedCallback callback;
 
     protected List<BeansCardModel> mDataset;
+
+
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public BeanCardsAdapter(Activity activity, BeanClickedCallback callback) {
         this.mDataset = new ArrayList<>();
         this.activity = activity;
         this.callback = callback;
+
+        itemDecoration = new DividerItemDecoration(activity, VERTICAL);
+        itemDecoration.setDrawable(activity.getDrawable(R.drawable.divider_bean_list));
     }
 
     // Create new views (invoked by the layout_beans_card manager)
@@ -66,9 +73,9 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager
                 .VERTICAL, false);
         viewHolder.recyclerView.setLayoutManager(layoutManager);
-        DividerItemDecoration itemDecor = new DividerItemDecoration(activity, VERTICAL);
-        itemDecor.setDrawable(activity.getDrawable(R.drawable.divider_bean_list));
-        viewHolder.recyclerView.addItemDecoration(itemDecor);
+        if (viewHolder.recyclerView.getItemDecorationCount() == 0) {
+            viewHolder.recyclerView.addItemDecoration(itemDecoration);
+        }
 
         RecyclerView.Adapter adapt = new BeansListAdapter(item.getBeans(), callback);
         viewHolder.recyclerView.setAdapter(adapt);

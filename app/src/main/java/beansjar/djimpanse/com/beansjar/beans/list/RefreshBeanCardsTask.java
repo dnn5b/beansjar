@@ -32,6 +32,12 @@ public class RefreshBeanCardsTask extends AsyncTask<Void, Void, List<Bean>> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        refreshLayout.setRefreshing(true);
+    }
+
+    @Override
     protected List<Bean> doInBackground(Void... params) {
         BeanDao beanDao = AppDatabase.getInstance(context).beanDao();
         return beanDao.getAll();

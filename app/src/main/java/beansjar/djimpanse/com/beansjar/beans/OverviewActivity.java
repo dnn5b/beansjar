@@ -59,7 +59,6 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
             getSupportFragmentManager().beginTransaction().add(R.id.content, newFragment,
                     BeansListFragment.class.getSimpleName()).addToBackStack(BeansListFragment
                     .class.getSimpleName()).commit();
-            //showAddBtn(false);
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -71,7 +70,7 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         if (savedInstanceState == null) {
             mListFragment = new BeansListFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.content, mListFragment,
-                    "tes").disallowAddToBackStack().commit();
+                    mListFragment.getClass().getSimpleName()).disallowAddToBackStack().commit();
         }
     }
 
