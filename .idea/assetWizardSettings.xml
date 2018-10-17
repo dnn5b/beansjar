@@ -33,7 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_rating" />
+                                      <entry key="outputName" value="ic_rating_red" />
+                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="themeColor" value="ff3c3d" />
                                     </map>
                                   </option>
                                 </PersistentState>

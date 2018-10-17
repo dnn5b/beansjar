@@ -3,23 +3,8 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Settings"/>
-    </group>
-
     <item android:title="Todo">
         <menu>
-            <item
-                android:id="@+id/nav_1"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="Extend bean (pictures)"/>
-            <item
-                android:id="@+id/nav_7"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="List shows random picture of day"/>
             <item
                 android:id="@+id/nav_4"
                 android:icon="@drawable/ic_menu_manage"

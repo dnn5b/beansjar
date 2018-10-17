@@ -52,8 +52,9 @@ public class RefreshBeanCardsTask extends AsyncTask<Void, Void, List<Bean>> {
         adapter.refreshData(beans);
 
         if (refreshLayout.isRefreshing()) {
-            activity.runOnUiThread(() -> refreshLayout.setRefreshing(false));
-
+            activity.runOnUiThread(() -> {
+                refreshLayout.setRefreshing(false);
+            });
         }
     }
 
