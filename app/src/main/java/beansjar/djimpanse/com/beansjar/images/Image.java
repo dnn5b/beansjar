@@ -35,7 +35,7 @@ public class Image {
     /**
      * The absolute path to the file (including name and file ending).
      */
-    private String imageAbsolutePath;
+    protected String imageAbsolutePath;
 
     /**
      * The URI of the input file. Used when loading the image to the internal storage
@@ -92,11 +92,18 @@ public class Image {
     }
 
     public boolean delete() {
-        File imgFile = new File(imageAbsolutePath);
-        if (!imgFile.exists()) {
-            throw new IllegalStateException("Delete: image not available!");
+        // If the bean has no image the path will be null
+        boolean result = true;
+
+        if (imageAbsolutePath != null) {
+            File imgFile = new File(imageAbsolutePath);
+            if (!imgFile.exists()) {
+                throw new IllegalStateException("Delete: image not available!");
+            }
+            result = imgFile.delete();
         }
-        return imgFile.delete();
+
+        return result;
     }
 
     /**

@@ -50,6 +50,7 @@ public class BeanDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_beans_details, container, false);
 
         ImageView imageView = view.findViewById(R.id.imageView);
+
         mBean.getImage().loadIntoImageView(imageView);
 
         showEventText(view.findViewById(R.id.eventTxt));
