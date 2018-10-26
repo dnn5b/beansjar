@@ -1,20 +1,22 @@
 package beansjar.djimpanse.com.beansjar.beans.list;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import beansjar.djimpanse.com.beansjar.R;
+import beansjar.djimpanse.com.beansjar.beans.create.CreateCallback;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.delete.ConfirmDeleteBeanDialog;
+import beansjar.djimpanse.com.beansjar.beans.delete.DeleteCallback;
 import beansjar.djimpanse.com.beansjar.beans.details.BeanDetailsFragment;
 
 
@@ -25,26 +27,10 @@ public class BeansListFragment extends Fragment implements BeanClickedCallback {
     private RecyclerView mRecyclerView;
     private BeanCardsAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private DeleteCallback mDeleteListener;
 
     public BeansListFragment() {
         // Required empty public constructor
-    }
-
-    public void setupList(View view) {
-        mRecyclerView = view.findViewById(R.id.overview_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout_beans_card size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout_beans_card manager
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new BeanCardsAdapter(getActivity(), this);
-        mRecyclerView.setAdapter(mAdapter);
-        refreshOverview();
     }
 
     @Override
@@ -64,6 +50,34 @@ public class BeansListFragment extends Fragment implements BeanClickedCallback {
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CreateCallback) {
+            mDeleteListener = (DeleteCallback) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement " +
+                    "CreateCallback");
+        }
+    }
+
+    public void setupList(View view) {
+        mRecyclerView = view.findViewById(R.id.overview_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout_beans_card size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout_beans_card manager
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new BeanCardsAdapter(getActivity(), this);
+        mRecyclerView.setAdapter(mAdapter);
+        refreshOverview();
+    }
+
     public void refreshOverview() {
         if (refreshTask == null || refreshTask.getStatus() != AsyncTask.Status.RUNNING) {
             refreshTask = new RefreshBeanCardsTask(getActivity(), mAdapter, swipeRefreshLayout);
@@ -73,7 +87,7 @@ public class BeansListFragment extends Fragment implements BeanClickedCallback {
 
     @Override
     public void onLongClick(Bean bean) {
-        new ConfirmDeleteBeanDialog(getActivity(), bean).show();
+        new ConfirmDeleteBeanDialog(getActivity(), bean, mDeleteListener).show();
     }
 
     @Override

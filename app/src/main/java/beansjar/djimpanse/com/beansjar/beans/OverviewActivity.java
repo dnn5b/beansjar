@@ -22,10 +22,11 @@ import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.create.CreateBeanFragment;
 import beansjar.djimpanse.com.beansjar.beans.create.CreateCallback;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
+import beansjar.djimpanse.com.beansjar.beans.delete.DeleteCallback;
 import beansjar.djimpanse.com.beansjar.beans.list.BeansListFragment;
 
 
-public class OverviewActivity extends AppCompatActivity implements CreateCallback {
+public class OverviewActivity extends AppCompatActivity implements CreateCallback, DeleteCallback {
 
     private BeansListFragment mListFragment;
     private FloatingActionButton mFloatingActionBtn;
@@ -107,8 +108,7 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void beanCreated() {
+    private void refreshList() {
         if (mListFragment != null) {
             mListFragment.refreshOverview();
         }
@@ -116,5 +116,15 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
 
     private void showAddBtn(boolean isVisible) {
         mFloatingActionBtn.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void beanCreated() {
+        refreshList();
+    }
+
+    @Override
+    public void beanDeleted() {
+        refreshList();
     }
 }

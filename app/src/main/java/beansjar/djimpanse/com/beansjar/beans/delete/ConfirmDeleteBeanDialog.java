@@ -15,11 +15,13 @@ public class ConfirmDeleteBeanDialog extends Dialog {
 
     private final Context context;
     private final Bean bean;
+    private final DeleteCallback mDeleteListener;
 
-    public ConfirmDeleteBeanDialog(Context context, Bean bean) {
+    public ConfirmDeleteBeanDialog(Context context, Bean bean, DeleteCallback listener) {
         super(context);
         this.context = context;
         this.bean = bean;
+        this.mDeleteListener = listener;
     }
 
     public void show() {
@@ -39,6 +41,6 @@ public class ConfirmDeleteBeanDialog extends Dialog {
     }
 
     private void deleteConfirmed() {
-        new DeleteBeanTask(context, bean).execute();
+        new DeleteBeanTask(context, bean, mDeleteListener).execute();
     }
 }
