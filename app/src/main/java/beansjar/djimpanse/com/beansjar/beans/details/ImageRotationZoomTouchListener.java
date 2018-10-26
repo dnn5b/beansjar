@@ -88,6 +88,10 @@ public class ImageRotationZoomTouchListener implements View.OnTouchListener {
                 break;
         }
 
+        // Default scale type is 'fitCenter' and has to be changed before view is matrix
+        if (view.getScaleType() != ImageView.ScaleType.MATRIX) {
+            view.setScaleType(ImageView.ScaleType.MATRIX);
+        }
         view.setImageMatrix(matrix);
 
         return true;
