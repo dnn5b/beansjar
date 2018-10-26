@@ -86,6 +86,7 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         List<BeansCardModel> models = BeansCardModel.createModels(beans);
         mDataset.clear();
         mDataset.addAll(models);
+        mDataset.sort((b1, b2) -> b1.getDate().isBefore(b2.getDate()) ? 1 : -1);
         notifyDataSetChanged();
     }
 
