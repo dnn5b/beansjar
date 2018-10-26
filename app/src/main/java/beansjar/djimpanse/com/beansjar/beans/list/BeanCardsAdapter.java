@@ -61,6 +61,8 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 ".MM.yyyy")));
         if (item.getImage() != null) {
            item.getImage().loadIntoImageView(viewHolder.titleImageView, 300, 100);
+        } else {
+            viewHolder.titleImageView.setImageBitmap(null);
         }
 
         viewHolder.recyclerView.setHasFixedSize(true);
