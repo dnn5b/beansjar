@@ -4,11 +4,12 @@ package beansjar.djimpanse.com.beansjar.images;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -51,14 +52,6 @@ public class Image {
         this.imageAbsolutePath = inputImagePath;
     }
 
-    public Bitmap getBitmap() {
-        File imgFile = new File(imageAbsolutePath);
-        if (!imgFile.exists()) {
-            throw new IllegalStateException("Loading: image not available!");
-        }
-        return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-    }
-
     public String saveToInternalStorage(Activity activity) {
         ContextWrapper cw = new ContextWrapper(activity);
 
@@ -76,8 +69,17 @@ public class Image {
                     inputUri);
 
             // Compress the BitMap object and write it to the OutputStream
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 10, fos);
             this.imageAbsolutePath = path.getAbsolutePath();
+
+            // Try to copy EXIF attributes to new image
+            try {
+                new ExifHandler(getRealPathFromURI(activity, inputUri), imageAbsolutePath)
+                        .copyOrientationTag();
+            } catch (IOException ioException) {
+                Toast.makeText(activity, R.string.beans_create_fragment_exif_copy_fail, Toast
+                        .LENGTH_SHORT).show();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,5 +136,26 @@ public class Image {
      */
     public void loadIntoImageView(ImageView imageView, int width, int height) {
         Picasso.get().load(getFilePath()).resize(width, height).centerCrop().into(imageView);
+    }
+
+    /**
+     * Gets the system path for the passed URI.
+     *
+     * @param context    the calling context
+     * @param contentURI the file's URI
+     * @return the system path to the file
+     */
+    private String getRealPathFromURI(Context context, Uri contentURI) {
+        String result;
+        Cursor cursor = context.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 }

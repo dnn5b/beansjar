@@ -15,6 +15,7 @@
     <string name="beans_create_fragment_toast_data_missing">Data missing!</string>
     <string name="beans_create_fragment_image_name_placeholder">No image selected</string>
     <string name="beans_create_fragment_image_select_button">Image</string>
+    <string name="beans_create_fragment_exif_copy_fail">Exception while trying to copy EXIF attributes!</string>
 
     <!-- Delete beans confirm dialog -->
     <string name="beans_delete_confirm_dialog_text">You\'re about to delete \'%s\' from %s.\nAre you sure?</string>
