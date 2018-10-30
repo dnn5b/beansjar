@@ -49,7 +49,7 @@ public class Bean implements Parcelable {
     private String imagePath;
 
     @Ignore
-    private Image image;
+    protected Image image;
 
     protected Bean(Parcel in) {
         id = in.readInt();

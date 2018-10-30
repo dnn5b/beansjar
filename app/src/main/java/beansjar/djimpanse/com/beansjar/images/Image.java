@@ -52,6 +52,10 @@ public class Image {
         this.imageAbsolutePath = inputImagePath;
     }
 
+    public String getImageAbsolutePath() {
+        return imageAbsolutePath;
+    }
+
     public String saveToInternalStorage(Activity activity) {
         ContextWrapper cw = new ContextWrapper(activity);
 
