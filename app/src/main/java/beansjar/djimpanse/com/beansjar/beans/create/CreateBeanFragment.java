@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +41,7 @@ public class CreateBeanFragment extends Fragment {
     private ImageView rating1;
     private ImageView rating2;
     private ImageView rating3;
-    private TextView mImageNameTextView;
+    private Button selectImgBtn;
     private Bean mBean;
     private CreateCallback mListener;
 
@@ -107,11 +109,11 @@ public class CreateBeanFragment extends Fragment {
 
         });
 
-        mImageNameTextView = view.findViewById(R.id.image_name);
-
         view.findViewById(R.id.btn_create).setOnClickListener(evt -> createBean());
         view.findViewById(R.id.btn_cancel).setOnClickListener(evt -> close());
-        view.findViewById(R.id.btn_select_image).setOnClickListener(evt -> selectImage());
+
+        selectImgBtn = view.findViewById(R.id.btn_select_image);
+        selectImgBtn.setOnClickListener(evt -> selectImage());
 
         return view;
     }
@@ -147,7 +149,7 @@ public class CreateBeanFragment extends Fragment {
             switch (requestCode) {
                 case INTENT_SELECT_IMAGE:
                     selectedImageUri = data.getData();
-                    mImageNameTextView.setText(data.getDataString());
+                    selectImgBtn.setBackgroundResource(R.color.colorPrimary);
                     break;
             }
         }
