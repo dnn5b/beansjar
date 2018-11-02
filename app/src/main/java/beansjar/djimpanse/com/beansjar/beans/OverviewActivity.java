@@ -53,8 +53,9 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
 
         mFloatingActionBtn = findViewById(R.id.fab);
         mFloatingActionBtn.setOnClickListener(view -> {
-            Fragment newFragment = new CreateBeanFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.content, newFragment,
+            Fragment createFragment = CreateBeanFragment.newInstance(mFloatingActionBtn.getX(),
+                    mFloatingActionBtn.getY());
+            getSupportFragmentManager().beginTransaction().add(R.id.content, createFragment,
                     BeansListFragment.class.getSimpleName()).addToBackStack(BeansListFragment
                     .class.getSimpleName()).commit();
         });

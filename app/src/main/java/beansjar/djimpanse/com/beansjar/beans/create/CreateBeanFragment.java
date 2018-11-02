@@ -18,21 +18,22 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.time.LocalDate;
-import java.util.concurrent.Executors;
 
-import beansjar.djimpanse.com.beansjar.AppDatabase;
 import beansjar.djimpanse.com.beansjar.R;
+import beansjar.djimpanse.com.beansjar.animations.AnimationSettings;
+import beansjar.djimpanse.com.beansjar.animations.Animator;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.data.BeanRatingEnum;
 import beansjar.djimpanse.com.beansjar.images.Image;
 
 
-public class CreateBeanFragment extends Fragment {
+public class CreateBeanFragment extends Fragment implements Animator.OnDismissedListener {
+
+    private static final String START_POSITION_X = "startPositionX";
+    private static final String START_POSITION_Y = "startPositionY";
 
     private static final int INTENT_SELECT_IMAGE = 1337;
 
@@ -44,11 +45,23 @@ public class CreateBeanFragment extends Fragment {
     private Button selectImgBtn;
     private Bean mBean;
     private CreateCallback mListener;
-
     private Uri selectedImageUri;
+    private AnimationSettings settings;
+    private View mView;
 
     public CreateBeanFragment() {
         // Required empty public constructor
+    }
+
+    public static CreateBeanFragment newInstance(float startPosX, float startPosY) {
+        CreateBeanFragment fragment = new CreateBeanFragment();
+
+        Bundle args = new Bundle();
+        args.putFloat(START_POSITION_X, startPosX);
+        args.putFloat(START_POSITION_Y, startPosY);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -57,8 +70,7 @@ public class CreateBeanFragment extends Fragment {
         if (context instanceof CreateCallback) {
             mListener = (CreateCallback) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement " +
-                    "CreateCallback");
+            throw new RuntimeException(context.toString() + " must implement " + "CreateCallback");
         }
     }
 
@@ -67,21 +79,30 @@ public class CreateBeanFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mBean = new Bean();
         mBean.setDate(LocalDate.now());
+
+        // Entry and exit animation settings
+        settings = AnimationSettings.constructRevealAnimation(getActivity(), getArguments()
+                .getFloat(START_POSITION_X), getArguments().getFloat(START_POSITION_Y), 700,
+                getActivity().getColor(R.color.colorAccent), getActivity().getColor(R.color
+                        .default_background));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         // Inflate the layout_beans_card for this fragment
-        View view = inflater.inflate(R.layout.fragment_beans_create, container, false);
+        mView = inflater.inflate(R.layout.fragment_beans_create, container, false);
 
-        eventTxt = view.findViewById(R.id.event);
-        calendarView = view.findViewById(R.id.calendarView);
+        // Create and start reveal animation
+        new Animator(settings).startCircularEnter(mView);
+
+        eventTxt = mView.findViewById(R.id.event);
+        calendarView = mView.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((calView, year, month, day) -> {
             // Month is 0 based in widget
             mBean.setDate(LocalDate.of(year, month + 1, day));
         });
-        rating1 = view.findViewById(R.id.rating1);
+        rating1 = mView.findViewById(R.id.rating1);
         applyColorFilterOnView(rating1, false);
         rating1.setOnClickListener(evt -> {
             mBean.setRating(BeanRatingEnum.LOW);
@@ -90,7 +111,7 @@ public class CreateBeanFragment extends Fragment {
             applyColorFilterOnView(rating3, false);
         });
 
-        rating2 = view.findViewById(R.id.rating2);
+        rating2 = mView.findViewById(R.id.rating2);
         applyColorFilterOnView(rating2, false);
         rating2.setOnClickListener(evt -> {
             mBean.setRating(BeanRatingEnum.MEDIUM);
@@ -99,7 +120,7 @@ public class CreateBeanFragment extends Fragment {
             applyColorFilterOnView(rating3, false);
         });
 
-        rating3 = view.findViewById(R.id.rating3);
+        rating3 = mView.findViewById(R.id.rating3);
         applyColorFilterOnView(rating3, false);
         rating3.setOnClickListener(evt -> {
             mBean.setRating(BeanRatingEnum.HIGH);
@@ -109,13 +130,13 @@ public class CreateBeanFragment extends Fragment {
 
         });
 
-        view.findViewById(R.id.btn_create).setOnClickListener(evt -> createBean());
-        view.findViewById(R.id.btn_cancel).setOnClickListener(evt -> close());
+        mView.findViewById(R.id.btn_create).setOnClickListener(evt -> createBean());
+        mView.findViewById(R.id.btn_cancel).setOnClickListener(evt -> close());
 
-        selectImgBtn = view.findViewById(R.id.btn_select_image);
+        selectImgBtn = mView.findViewById(R.id.btn_select_image);
         selectImgBtn.setOnClickListener(evt -> selectImage());
 
-        return view;
+        return mView;
     }
 
     private void applyColorFilterOnView(ImageView imageView, boolean apply) {
@@ -156,20 +177,23 @@ public class CreateBeanFragment extends Fragment {
     }
 
     /**
-     * Hides the keyboard if showing,
+     * Hides the keyboard if showing.
      */
     private void close() {
-        // Check if no view has focus and then hide the keyboard
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
+        // Check if no mView has focus and then hide the keyboard
+        View focusedView = getActivity().getCurrentFocus();
+        if (focusedView != null) {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context
                     .INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
         }
 
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction().remove(this).commit();
         manager.popBackStack();
+
+        // TODO Create and start exit animation
+        //new Animator(settings).startCircularExit(mView, this);
     }
 
     public void createBean() {
@@ -203,4 +227,10 @@ public class CreateBeanFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onDismissed() {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        manager.beginTransaction().remove(this).commit();
+        manager.popBackStack();
+    }
 }
