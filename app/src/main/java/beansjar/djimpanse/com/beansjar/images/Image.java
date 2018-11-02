@@ -1,6 +1,7 @@
 package beansjar.djimpanse.com.beansjar.images;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import beansjar.djimpanse.com.beansjar.R;
+import beansjar.djimpanse.com.beansjar.permissions.PermissionsHandler;
 
 
 /**

@@ -1,6 +1,7 @@
 package beansjar.djimpanse.com.beansjar.beans.create;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import beansjar.djimpanse.com.beansjar.animations.Animator;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.data.BeanRatingEnum;
 import beansjar.djimpanse.com.beansjar.images.Image;
+import beansjar.djimpanse.com.beansjar.permissions.PermissionsHandler;
 
 
 public class CreateBeanFragment extends Fragment implements Animator.OnDismissedListener {
@@ -202,6 +204,11 @@ public class CreateBeanFragment extends Fragment implements Animator.OnDismissed
         if (mBean.isValid()) {
             // Save image to internal storage
             if (selectedImageUri != null) {
+                PermissionsHandler permissionsHandler = new PermissionsHandler(getActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+                if (!permissionsHandler.isGranted()) {
+                    permissionsHandler.request();
+                }
                 Image image = new Image(selectedImageUri);
                 String filePath = image.saveToInternalStorage(getActivity());
                 mBean.setImagePath(filePath);
