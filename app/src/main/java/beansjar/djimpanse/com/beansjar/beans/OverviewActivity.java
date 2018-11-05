@@ -52,13 +52,7 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         });
 
         mFloatingActionBtn = findViewById(R.id.fab);
-        mFloatingActionBtn.setOnClickListener(view -> {
-            Fragment createFragment = CreateBeanFragment.newInstance(mFloatingActionBtn.getX(),
-                    mFloatingActionBtn.getY());
-            getSupportFragmentManager().beginTransaction().add(R.id.content, createFragment,
-                    BeansListFragment.class.getSimpleName()).addToBackStack(BeansListFragment
-                    .class.getSimpleName()).commit();
-        });
+        mFloatingActionBtn.setOnClickListener(view -> fabClicked());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string
@@ -68,8 +62,11 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
 
         if (savedInstanceState == null) {
             mListFragment = new BeansListFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.content, mListFragment,
-                    mListFragment.getClass().getSimpleName()).disallowAddToBackStack().commit();
+            getSupportFragmentManager().beginTransaction()
+                                       .add(R.id.content, mListFragment, mListFragment.getClass()
+                                                                                      .getSimpleName())
+                                       .disallowAddToBackStack()
+                                       .commit();
         }
     }
 
@@ -97,12 +94,17 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            Executors.newSingleThreadScheduledExecutor().execute(() -> {
-                List<Bean> all = AppDatabase.getInstance(OverviewActivity.this).beanDao().getAll();
-                for (Bean bean : all) {
-                    AppDatabase.getInstance(OverviewActivity.this).beanDao().delete(bean);
-                }
-            });
+            Executors.newSingleThreadScheduledExecutor()
+                     .execute(() -> {
+                         List<Bean> all = AppDatabase.getInstance(OverviewActivity.this)
+                                                     .beanDao()
+                                                     .getAll();
+                         for (Bean bean : all) {
+                             AppDatabase.getInstance(OverviewActivity.this)
+                                        .beanDao()
+                                        .delete(bean);
+                         }
+                     });
             return true;
         }
 
@@ -115,8 +117,24 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         }
     }
 
+    // TODO sometimes the add button isn't shown after the create fragment is closed.
     private void showAddBtn(boolean isVisible) {
         mFloatingActionBtn.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * If the floating action button is clicked the {@link CreateBeanFragment} is shown.
+     */
+    private void fabClicked() {
+        float fabCenterX = mFloatingActionBtn.getX() + mFloatingActionBtn.getHeight() / 2;
+        float fabCenterY = mFloatingActionBtn.getY() - mFloatingActionBtn.getHeight() / 2;
+
+        Fragment createFragment = CreateBeanFragment.newInstance(fabCenterX, fabCenterY);
+
+        getSupportFragmentManager().beginTransaction()
+                                   .add(R.id.content, createFragment, BeansListFragment.class.getSimpleName())
+                                   .addToBackStack(BeansListFragment.class.getSimpleName())
+                                   .commit();
     }
 
     @Override

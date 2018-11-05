@@ -24,6 +24,7 @@ import android.widget.Toast;
 import java.time.LocalDate;
 
 import beansjar.djimpanse.com.beansjar.R;
+import beansjar.djimpanse.com.beansjar.animations.AnimationListener;
 import beansjar.djimpanse.com.beansjar.animations.AnimationSettings;
 import beansjar.djimpanse.com.beansjar.animations.Animator;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
@@ -32,7 +33,7 @@ import beansjar.djimpanse.com.beansjar.images.Image;
 import beansjar.djimpanse.com.beansjar.permissions.PermissionsHandler;
 
 
-public class CreateBeanFragment extends Fragment implements Animator.OnDismissedListener {
+public class CreateBeanFragment extends Fragment implements AnimationListener {
 
     private static final String START_POSITION_X = "startPositionX";
     private static final String START_POSITION_Y = "startPositionY";
@@ -84,7 +85,7 @@ public class CreateBeanFragment extends Fragment implements Animator.OnDismissed
 
         // Entry and exit animation settings
         settings = AnimationSettings.constructRevealAnimation(getActivity(), getArguments()
-                .getFloat(START_POSITION_X), getArguments().getFloat(START_POSITION_Y), 700,
+                .getFloat(START_POSITION_X), getArguments().getFloat(START_POSITION_Y), 500,
                 getActivity().getColor(R.color.colorAccent), getActivity().getColor(R.color
                         .default_background));
     }
@@ -179,7 +180,7 @@ public class CreateBeanFragment extends Fragment implements Animator.OnDismissed
     }
 
     /**
-     * Hides the keyboard if showing.
+     * Hides the keyboard if showing and start exits animation.
      */
     private void close() {
         // Check if no mView has focus and then hide the keyboard
@@ -190,12 +191,8 @@ public class CreateBeanFragment extends Fragment implements Animator.OnDismissed
             imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
         }
 
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        manager.beginTransaction().remove(this).commit();
-        manager.popBackStack();
-
-        // TODO Create and start exit animation
-        //new Animator(settings).startCircularExit(mView, this);
+        // The fragment will be removed in the callback after the animation is finished
+        new Animator(settings).startCircularExit(mView, this);
     }
 
     public void createBean() {
@@ -216,10 +213,8 @@ public class CreateBeanFragment extends Fragment implements Animator.OnDismissed
 
             // Trigger creation
             new CreateBeanTask(getActivity(), mBean, mListener).execute();
-            /*Executors.newSingleThreadScheduledExecutor().execute(() -> AppDatabase.getInstance
-                    (getActivity()).beanDao().insertAll(mBean));
 
-            mListener.beanCreated();*/
+            mListener.beanCreated();
             close();
 
         } else {
@@ -235,9 +230,12 @@ public class CreateBeanFragment extends Fragment implements Animator.OnDismissed
     }
 
     @Override
-    public void onDismissed() {
+    public void onAnimationEnd() {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction().remove(this).commit();
         manager.popBackStack();
+
+        // To prevent a flash of the fragment the removing has to be forced now.
+        manager.executePendingTransactions();
     }
 }
