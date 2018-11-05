@@ -199,16 +199,21 @@ public class CreateBeanFragment extends Fragment implements AnimationListener {
         mBean.setEvent(eventTxt.getText().toString());
 
         if (mBean.isValid()) {
-            // Save image to internal storage
+
             if (selectedImageUri != null) {
                 PermissionsHandler permissionsHandler = new PermissionsHandler(getActivity(),
                         Manifest.permission.READ_EXTERNAL_STORAGE);
                 if (!permissionsHandler.isGranted()) {
+                    // Stop bean creation and request permission
                     permissionsHandler.request();
+                    return;
+
+                } else {
+                    // Save image to internal storage
+                    Image image = new Image(selectedImageUri);
+                    String filePath = image.saveToInternalStorage(getActivity());
+                    mBean.setImagePath(filePath);
                 }
-                Image image = new Image(selectedImageUri);
-                String filePath = image.saveToInternalStorage(getActivity());
-                mBean.setImagePath(filePath);
             }
 
             // Trigger creation
