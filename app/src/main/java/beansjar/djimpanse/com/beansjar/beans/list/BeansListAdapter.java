@@ -13,12 +13,16 @@ import java.util.List;
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.ratings.RatingIcon;
+import beansjar.djimpanse.com.beansjar.util.StringUtils;
 
 
 /**
  * Adapter to show a list of {@link Bean}s.
  */
 public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    /** Max length of event in list. */
+    private static final int EVENT_MAX_LENGTH = 28;
 
     private BeanClickedCallback callback;
     private List<Bean> beans;
@@ -40,7 +44,7 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Bean item = beans.get(position);
         String text = item.getEvent();
         BeansListAdapter.ViewHolder viewHolder = ((BeansListAdapter.ViewHolder) holder);
-        viewHolder.eventTextView.setText(text);
+        viewHolder.eventTextView.setText(StringUtils.cutIfTooLong(text, EVENT_MAX_LENGTH));
         viewHolder.rating1.colorRedOrHide(item.getRating());
         viewHolder.rating2.colorRedOrHide(item.getRating());
         viewHolder.rating3.colorRedOrHide(item.getRating());

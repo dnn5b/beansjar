@@ -10,4 +10,7 @@ public class StringUtils {
         return string != null && !string.isEmpty();
     }
 
+    public static String cutIfTooLong(String string, int maxLength) {
+        return string.length() > maxLength ? string.substring(0, maxLength) + "..." : string;
+    }
 }
