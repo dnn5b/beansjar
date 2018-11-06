@@ -12,15 +12,21 @@ import android.widget.TextView;
 import java.time.format.DateTimeFormatter;
 
 import beansjar.djimpanse.com.beansjar.R;
+import beansjar.djimpanse.com.beansjar.animations.AnimationSettings;
+import beansjar.djimpanse.com.beansjar.animations.Animator;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.ratings.RatingIcon;
 
 
 public class BeanDetailsFragment extends Fragment {
 
+    private static final String START_POSITION_X = "startPositionX";
+    private static final String START_POSITION_Y = "startPositionY";
     private static final String ARG_BEAN = "fragment_argument_bean";
+    private static final  DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    private static final  DateTimeFormatter mFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private AnimationSettings settings;
+    private View mView;
 
     protected Bean mBean;
 
@@ -28,11 +34,15 @@ public class BeanDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static BeanDetailsFragment newInstance(Bean bean) {
+    public static BeanDetailsFragment newInstance(Bean bean, float startPosX, float startPosY) {
         BeanDetailsFragment fragment = new BeanDetailsFragment();
+
         Bundle args = new Bundle();
         args.putParcelable(ARG_BEAN, bean);
+        args.putFloat(START_POSITION_X, startPosX);
+        args.putFloat(START_POSITION_Y, startPosY);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -42,25 +52,34 @@ public class BeanDetailsFragment extends Fragment {
         if (getArguments() != null) {
             mBean = getArguments().getParcelable(ARG_BEAN);
         }
+
+        // Entry and exit animation settings
+        settings = AnimationSettings.constructRevealAnimation(getActivity(), getArguments()
+                        .getFloat(START_POSITION_X), getArguments().getFloat(START_POSITION_Y), 600,
+                getActivity().getColor(R.color.colorAccent), getActivity().getColor(R.color
+                        .default_background));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_beans_details, container, false);
+        mView = inflater.inflate(R.layout.fragment_beans_details, container, false);
 
-        ImageView imageView = view.findViewById(R.id.imageView);
+        // Create and start reveal animation
+        //new Animator(settings).startCircularEnter(mView);
+
+        ImageView imageView = mView.findViewById(R.id.imageView);
 
         mBean.getImage().loadIntoImageView(imageView);
 
-        showEventText(view.findViewById(R.id.eventTxt));
-        showDateText(view.findViewById(R.id.dateTxt));
+        showEventText(mView.findViewById(R.id.eventTxt));
+        showDateText(mView.findViewById(R.id.dateTxt));
 
-        showRating(view.findViewById(R.id.rating1));
-        showRating(view.findViewById(R.id.rating2));
-        showRating(view.findViewById(R.id.rating3));
+        showRating(mView.findViewById(R.id.rating1));
+        showRating(mView.findViewById(R.id.rating2));
+        showRating(mView.findViewById(R.id.rating3));
 
-        return view;
+        return mView;
     }
 
     protected void showEventText(TextView eventTxt) {
@@ -71,7 +90,7 @@ public class BeanDetailsFragment extends Fragment {
 
     protected void showDateText(TextView dateTxt) {
         if (dateTxt != null && mBean.getDate() != null) {
-            dateTxt.setText(mFormatter.format(mBean.getDate()));
+            dateTxt.setText(FORMATTER.format(mBean.getDate()));
         }
     }
 

@@ -18,7 +18,6 @@ import java.util.List;
 import beansjar.djimpanse.com.beansjar.R;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 
-import static android.support.v7.widget.RecyclerView.HORIZONTAL;
 import static android.support.v7.widget.RecyclerView.VERTICAL;
 
 
@@ -27,27 +26,27 @@ import static android.support.v7.widget.RecyclerView.VERTICAL;
  */
 public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static DividerItemDecoration itemDecoration;
+    private static DividerItemDecoration mItemDecoration;
 
-    private final Activity activity;
-    private final BeanClickedCallback callback;
+    private final Activity mActivity;
+    private final BeanClickedCallback mCallback;
 
     protected List<BeansCardModel> mDataset;
 
     public BeanCardsAdapter(Activity activity, BeanClickedCallback callback) {
         this.mDataset = new ArrayList<>();
-        this.activity = activity;
-        this.callback = callback;
+        this.mActivity = activity;
+        this.mCallback = callback;
 
-        itemDecoration = new DividerItemDecoration(activity, VERTICAL);
-        itemDecoration.setDrawable(activity.getDrawable(R.drawable.divider_bean_list));
+        mItemDecoration = new DividerItemDecoration(activity, VERTICAL);
+        mItemDecoration.setDrawable(activity.getDrawable(R.drawable.divider_bean_list));
     }
 
     // Create new views (invoked by the layout_beans_card manager)
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_beans_card,
-                parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                               .inflate(R.layout.layout_beans_card, parent, false);
         return new ViewHolder(v);
     }
 
@@ -57,25 +56,25 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         BeansCardModel item = mDataset.get(position);
 
         ViewHolder viewHolder = ((ViewHolder) holder);
-        viewHolder.dateTextView.setText(item.getDate().format(DateTimeFormatter.ofPattern("dd" +
-                ".MM.yyyy")));
+        viewHolder.dateTextView.setText(item.getDate()
+                                            .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         if (item.getImage() != null) {
-           item.getImage().loadIntoImageView(viewHolder.titleImageView, 300, 100);
+            item.getImage()
+                .loadIntoImageView(viewHolder.titleImageView, 300, 100);
         } else {
             viewHolder.titleImageView.setImageBitmap(null);
         }
 
         viewHolder.recyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager
-                .VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         viewHolder.recyclerView.setLayoutManager(layoutManager);
         if (viewHolder.recyclerView.getItemDecorationCount() == 0) {
-            viewHolder.recyclerView.addItemDecoration(itemDecoration);
+            viewHolder.recyclerView.addItemDecoration(mItemDecoration);
         }
 
-        RecyclerView.Adapter adapt = new BeansListAdapter(item.getBeans(), callback);
-        viewHolder.recyclerView.setAdapter(adapt);
+        RecyclerView.Adapter listAdapter = new BeansListAdapter(item.getBeans(), mCallback);
+        viewHolder.recyclerView.setAdapter(listAdapter);
     }
 
     // Return the size of your dataset (invoked by the layout_beans_card manager)
@@ -88,7 +87,8 @@ public class BeanCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         List<BeansCardModel> models = BeansCardModel.createModels(beans);
         mDataset.clear();
         mDataset.addAll(models);
-        mDataset.sort((b1, b2) -> b1.getDate().isBefore(b2.getDate()) ? 1 : -1);
+        mDataset.sort((b1, b2) -> b1.getDate()
+                                    .isBefore(b2.getDate()) ? 1 : -1);
         notifyDataSetChanged();
     }
 

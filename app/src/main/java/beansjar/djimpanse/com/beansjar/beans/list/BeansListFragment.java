@@ -91,8 +91,8 @@ public class BeansListFragment extends Fragment implements BeanClickedCallback {
     }
 
     @Override
-    public void onClick(Bean bean) {
-        BeanDetailsFragment detailsFragment = BeanDetailsFragment.newInstance(bean);
+    public void onClick(Bean bean, int[] viewCenter) {
+        BeanDetailsFragment detailsFragment = BeanDetailsFragment.newInstance(bean, (float) viewCenter[0], (float) viewCenter[1]);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content, detailsFragment, BeanDetailsFragment.class.getSimpleName())

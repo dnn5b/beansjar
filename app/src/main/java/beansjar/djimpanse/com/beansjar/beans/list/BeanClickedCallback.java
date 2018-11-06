@@ -8,6 +8,6 @@ public interface BeanClickedCallback {
 
     void onLongClick(Bean bean);
 
-    void onClick(Bean bean);
+    void onClick(Bean bean, int[] viewCenter);
 
 }

@@ -22,7 +22,7 @@ import beansjar.djimpanse.com.beansjar.util.StringUtils;
 public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /** Max length of event in list. */
-    private static final int EVENT_MAX_LENGTH = 28;
+    private static final int EVENT_MAX_LENGTH = 25;
 
     private BeanClickedCallback callback;
     private List<Bean> beans;
@@ -59,8 +59,8 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         callback.onLongClick(beans.get(itemPosition));
     }
 
-    private void beanItemClicked(int itemPosition) {
-        callback.onClick(beans.get(itemPosition));
+    private void beanItemClicked(int itemPosition, int[] viewCenter) {
+        callback.onClick(beans.get(itemPosition), viewCenter);
     }
 
     private static class ViewHolder extends RecyclerView.ViewHolder implements View
@@ -91,7 +91,12 @@ public class BeansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onClick(View v) {
-            adapter.beanItemClicked(getAdapterPosition());
+            int[] viewCenter = new int[2];
+            v.getLocationInWindow(viewCenter);
+            viewCenter[0] = viewCenter[0] + (v.getWidth() / 2);
+            viewCenter[1] = viewCenter[1] + (v.getHeight() / 2);
+
+            adapter.beanItemClicked(getAdapterPosition(), viewCenter);
         }
     }
 
