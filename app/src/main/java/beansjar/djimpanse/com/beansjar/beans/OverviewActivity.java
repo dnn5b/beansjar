@@ -80,37 +80,6 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.overview, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            Executors.newSingleThreadScheduledExecutor()
-                     .execute(() -> {
-                         List<Bean> all = AppDatabase.getInstance(OverviewActivity.this)
-                                                     .beanDao()
-                                                     .getAll();
-                         for (Bean bean : all) {
-                             AppDatabase.getInstance(OverviewActivity.this)
-                                        .beanDao()
-                                        .delete(bean);
-                         }
-                     });
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void refreshList() {
         if (mListFragment != null) {
             mListFragment.refreshOverview();
