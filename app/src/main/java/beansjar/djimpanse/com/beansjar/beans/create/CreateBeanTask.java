@@ -4,7 +4,7 @@ package beansjar.djimpanse.com.beansjar.beans.create;
 import android.app.Activity;
 import android.os.AsyncTask;
 
-import beansjar.djimpanse.com.beansjar.AppDatabase;
+import beansjar.djimpanse.com.beansjar.database.AppDatabase;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 
 

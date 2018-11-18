@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:showIn="navigation_view">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    >
 
-    <item android:title="Todo">
+    <item
+        android:title="@string/nav_item_heading"
+        >
         <menu>
             <item
-                android:id="@+id/nav_4"
+                android:id="@+id/backup_database"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="Filter function"/>
+                android:title="@string/nav_item_backup_database"
+                />
             <item
-                android:id="@+id/nav_5"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Search function"/>
-            <item
-                android:id="@+id/nav_2"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="German translation"/>
-            <item
-                android:id="@+id/nav_3"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Animation"/>
+                android:id="@+id/import_database"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/nav_item_import_backup"
+                />
         </menu>
     </item>
 

@@ -17,6 +17,7 @@ import java.util.List;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.data.BeanDao;
 import beansjar.djimpanse.com.beansjar.beans.data.BeanRatingEnum;
+import beansjar.djimpanse.com.beansjar.database.AppDatabase;
 
 import static org.junit.Assert.assertEquals;
 

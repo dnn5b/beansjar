@@ -3,10 +3,17 @@
     <string name="action_settings">Settings</string>
 
     <!-- Navigation drawer -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">BeansJar</string>
     <string name="nav_header_desc">BeansJar</string>
+    <string name="nav_item_heading">Menu</string>
+    <string name="nav_item_backup_database">Backup database</string>
+    <string name="nav_item_import_backup">Import backup</string>
+
+    <!-- Backup -->
+    <string name="backup_result_success">Backup was successful. File is saved in downloads folder.</string>
+    <string name="backup_result_failure">Backup failed!</string>
 
     <!-- Create beans fragment -->
     <string name="beans_create_fragment_event_placeholder">Create</string>

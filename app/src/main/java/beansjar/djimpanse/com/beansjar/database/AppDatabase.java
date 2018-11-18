@@ -1,4 +1,4 @@
-package beansjar.djimpanse.com.beansjar;
+package beansjar.djimpanse.com.beansjar.database;
 
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
@@ -9,6 +9,9 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
+import java.io.File;
+
+import beansjar.djimpanse.com.beansjar.Converters;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.data.BeanDao;
 
@@ -47,5 +50,9 @@ public abstract class AppDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE " + Bean.TABLE_NAME + " ADD COLUMN image_path TEXT");
         }
     };
+
+    public File getDataBasePath(Context context) {
+        return context.getDatabasePath(DATABASE_NAME);
+    }
 
 }

@@ -2,14 +2,12 @@ package beansjar.djimpanse.com.beansjar.beans.list;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
-import beansjar.djimpanse.com.beansjar.AppDatabase;
+import beansjar.djimpanse.com.beansjar.database.AppDatabase;
 import beansjar.djimpanse.com.beansjar.beans.data.Bean;
 import beansjar.djimpanse.com.beansjar.beans.data.BeanDao;
 
