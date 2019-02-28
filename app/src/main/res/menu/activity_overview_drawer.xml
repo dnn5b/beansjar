@@ -10,6 +10,16 @@
         >
         <menu>
             <item
+                android:id="@+id/configure_reminder"
+                android:icon="@drawable/ic_timer"
+                android:title="@string/nav_item_reminder_configure"
+                />
+            <item
+                android:id="@+id/stop_reminder"
+                android:icon="@drawable/ic_timer_off"
+                android:title="@string/nav_item_reminder_stop"
+                />
+            <item
                 android:id="@+id/backup_database"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/nav_item_backup_database"

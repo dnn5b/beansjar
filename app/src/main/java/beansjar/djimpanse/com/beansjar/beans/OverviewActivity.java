@@ -23,6 +23,8 @@ import beansjar.djimpanse.com.beansjar.beans.create.CreateCallback;
 import beansjar.djimpanse.com.beansjar.beans.delete.DeleteCallback;
 import beansjar.djimpanse.com.beansjar.beans.list.BeansListFragment;
 import beansjar.djimpanse.com.beansjar.database.DatabaseBackupHandler;
+import beansjar.djimpanse.com.beansjar.reminder.AlarmManager;
+import beansjar.djimpanse.com.beansjar.reminder.ReminderDialog;
 
 
 public class OverviewActivity extends AppCompatActivity implements CreateCallback, DeleteCallback {
@@ -75,6 +77,16 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         navigationView.setNavigationItemSelectedListener((MenuItem menuItem) -> {
             int id = menuItem.getItemId();
             switch (id) {
+                case R.id.configure_reminder:
+                    new ReminderDialog(this).show();
+                    break;
+
+                case R.id.stop_reminder:
+                    AlarmManager.stop(this);
+                    Toast.makeText(this, R.string.reminder_notification_canceled, Toast.LENGTH_SHORT)
+                         .show();
+                    break;
+
                 case R.id.import_database:
                     // TODO: implement database import
                     Toast.makeText(this, "TODO", Toast.LENGTH_SHORT)

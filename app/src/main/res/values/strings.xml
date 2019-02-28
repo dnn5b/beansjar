@@ -8,8 +8,18 @@
     <string name="nav_header_title">BeansJar</string>
     <string name="nav_header_desc">BeansJar</string>
     <string name="nav_item_heading">Menu</string>
+    <string name="nav_item_reminder_configure">Configure reminder</string>
+    <string name="nav_item_reminder_stop">Stop reminder</string>
     <string name="nav_item_backup_database">Backup database</string>
     <string name="nav_item_import_backup">Import backup</string>
+
+    <!-- Reminder -->
+    <string name="reminder_notification_channel_name">Beans reminder</string>
+    <string name="reminder_notification_channel_desc">Reminder notifications.</string>
+    <string name="reminder_notification_title">Don\'t forget!</string>
+    <string name="reminder_notification_desc">What\'s today\'s bean?</string>
+    <string name="reminder_notification_set">Daily timer: %1$s</string>
+    <string name="reminder_notification_canceled">Timer canceled</string>
 
     <!-- Backup -->
     <string name="backup_result_success">Backup was successful. File is saved in downloads folder.</string>
