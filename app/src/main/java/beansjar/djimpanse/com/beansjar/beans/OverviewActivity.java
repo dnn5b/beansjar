@@ -23,6 +23,8 @@ import beansjar.djimpanse.com.beansjar.beans.create.CreateCallback;
 import beansjar.djimpanse.com.beansjar.beans.delete.DeleteCallback;
 import beansjar.djimpanse.com.beansjar.beans.list.BeansListFragment;
 import beansjar.djimpanse.com.beansjar.database.DatabaseBackupHandler;
+import beansjar.djimpanse.com.beansjar.preferences.Preference;
+import beansjar.djimpanse.com.beansjar.preferences.Preferences;
 import beansjar.djimpanse.com.beansjar.reminder.AlarmManager;
 import beansjar.djimpanse.com.beansjar.reminder.ReminderDialog;
 
@@ -56,8 +58,8 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
         mFloatingActionBtn.setOnClickListener(view -> fabClicked());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open, R
-                .string.nav_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open,
+                R.string.nav_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         setupNavigation();
@@ -85,6 +87,7 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
                     AlarmManager.stop(this);
                     Toast.makeText(this, R.string.reminder_notification_canceled, Toast.LENGTH_SHORT)
                          .show();
+                    enableReminderButtons(navigationView);
                     break;
 
                 case R.id.import_database:
@@ -102,6 +105,21 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
             }
             return false;
         });
+
+        enableReminderButtons(navigationView);
+    }
+
+    /**
+     * En/Disables the reminder buttons based on the setting of Preference.IS_REMINDER_SET in the shared prefs of the
+     * app.
+     *
+     * @param navigationView the navigation containing the reminder buttons
+     */
+    private void enableReminderButtons(NavigationView navigationView) {
+        navigationView.getMenu()
+                      .findItem(R.id.stop_reminder)
+                      .setEnabled(Preferences.getInstance(this)
+                                             .getBoolean(Preference.IS_REMINDER_SET));
     }
 
     @Override

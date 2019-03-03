@@ -8,6 +8,8 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import beansjar.djimpanse.com.beansjar.R;
+import beansjar.djimpanse.com.beansjar.preferences.Preference;
+import beansjar.djimpanse.com.beansjar.preferences.Preferences;
 
 
 public class ReminderDialog {
