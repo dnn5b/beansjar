@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import beansjar.djimpanse.com.beansjar.BootReceiver;
 import beansjar.djimpanse.com.beansjar.preferences.Preference;
 import beansjar.djimpanse.com.beansjar.preferences.Preferences;
-import beansjar.djimpanse.com.beansjar.util.StringUtils;
 
 import static beansjar.djimpanse.com.beansjar.util.StringUtils.getTime;
 
@@ -141,11 +140,11 @@ public class AlarmManager extends BroadcastReceiver {
     private void enableBootReceiver(boolean enable) {
         LOGGER.info("BootReceiver is " + (enable ? "enabled" : "disabled"));
 
-        int receiverMode = enable ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-
         ComponentName receiver = new ComponentName(mContext, BootReceiver.class);
         PackageManager pm = mContext.getPackageManager();
+
+        int receiverMode = enable ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
         pm.setComponentEnabledSetting(receiver, receiverMode, PackageManager.DONT_KILL_APP);
     }
 
