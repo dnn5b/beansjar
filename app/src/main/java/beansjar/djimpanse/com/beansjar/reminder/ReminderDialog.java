@@ -8,8 +8,8 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import beansjar.djimpanse.com.beansjar.R;
-import beansjar.djimpanse.com.beansjar.preferences.Preference;
-import beansjar.djimpanse.com.beansjar.preferences.Preferences;
+
+import static beansjar.djimpanse.com.beansjar.util.StringUtils.getTime;
 
 
 public class ReminderDialog {
@@ -37,7 +37,7 @@ public class ReminderDialog {
 
     private void startAlarm(int hour, int minute) {
         // Show info toast
-        Toast.makeText(mContext, mContext.getString(R.string.reminder_notification_set, hour + ":" + minute),
+        Toast.makeText(mContext, mContext.getString(R.string.reminder_notification_set, getTime(hour, minute)),
                 Toast.LENGTH_SHORT)
              .show();
 
@@ -45,7 +45,7 @@ public class ReminderDialog {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
-        AlarmManager.start(mContext, calendar);
+        new AlarmManager(mContext).start(calendar);
     }
 
 }

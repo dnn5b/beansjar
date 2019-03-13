@@ -84,7 +84,7 @@ public class OverviewActivity extends AppCompatActivity implements CreateCallbac
                     break;
 
                 case R.id.stop_reminder:
-                    AlarmManager.stop(this);
+                    new AlarmManager(this).stop();
                     Toast.makeText(this, R.string.reminder_notification_canceled, Toast.LENGTH_SHORT)
                          .show();
                     enableReminderButtons(navigationView);
